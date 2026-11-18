@@ -1,0 +1,73 @@
+diff --git a/client/src/components/WeekPanel.streak.test.tsx b/client/src/components/WeekPanel.streak.test.tsx
+new file mode 100644
+index 0000000..3de922f
+--- /dev/null
++++ b/client/src/components/WeekPanel.streak.test.tsx
+@@ -0,0 +1,23 @@
++import { screen, waitFor, within } from '@testing-library/react';
++import userEvent from '@testing-library/user-event';
++import { describe, expect, it } from 'vitest';
++import { mockApi } from '../test/mockApi.ts';
++import { card, renderApp } from '../test/renderApp.tsx';
++
++describe('marking an earlier day', () => {
++  it('makes the streak longer when the day fills the gap before today', async () => {
++    mockApi({
++      habits: [{ id: 2, name: 'Read 10 pages', weeklyGoal: 5, days: ['2026-03-14', '2026-03-15', '2026-03-16', '2026-03-18'] }],
++    });
++    await renderApp();
++    expect(within(card(2)).getByTestId('streak')).toHaveTextContent('1 day in a row');
++
++    await userEvent.click(screen.getByRole('button', { name: 'Last 7 days' }));
++    const panel = await screen.findByRole('complementary', { name: 'Last 7 days' });
++    await userEvent.click(await within(panel).findByRole('button', { name: 'Read 10 pages, Tuesday, March 17' }));
++
++    await waitFor(() => {
++      expect(within(card(2)).getByTestId('streak')).toHaveTextContent('5 days in a row');
++    });
++  });
++});
+diff --git a/client/src/streak.order.test.ts b/client/src/streak.order.test.ts
+new file mode 100644
+index 0000000..b61af69
+--- /dev/null
++++ b/client/src/streak.order.test.ts
+@@ -0,0 +1,20 @@
++import { describe, expect, it } from 'vitest';
++import { currentStreak } from './streak.ts';
++
++const TODAY = '2026-03-18';
++
++describe('currentStreak with days in any order', () => {
++  it('counts a day that was marked after the newer ones', () => {
++    // Yesterday was marked last, so it comes after today in the list.
++    expect(currentStreak(['2026-03-15', '2026-03-16', '2026-03-18', '2026-03-17'], TODAY)).toBe(4);
++  });
++
++  it('counts the same streak however the days are ordered', () => {
++    expect(currentStreak(['2026-03-18', '2026-03-16', '2026-03-17'], TODAY)).toBe(3);
++    expect(currentStreak(['2026-03-17', '2026-03-16', '2026-03-10'], TODAY)).toBe(2);
++  });
++
++  it('counts a day once when it appears twice', () => {
++    expect(currentStreak(['2026-03-17', '2026-03-17', '2026-03-18'], TODAY)).toBe(2);
++  });
++});
+diff --git a/client/src/streak.ts b/client/src/streak.ts
+index 5904a38..d1bf0bd 100644
+--- a/client/src/streak.ts
++++ b/client/src/streak.ts
+@@ -5,10 +5,10 @@ import { addDays } from './dates.ts';
+  * does not break a streak: when today is not marked, the count starts from yesterday.
+  */
+ export function currentStreak(days: string[], today: string): number {
+-  // The newest day is the last one of the list: walk back from it while the days are in a row.
+-  let day = days.includes(today) ? today : addDays(today, -1);
++  const marked = new Set(days);
++  let day = marked.has(today) ? today : addDays(today, -1);
+   let streak = 0;
+-  for (let index = days.length - 1; index >= 0 && days[index] === day; index -= 1) {
++  while (marked.has(day)) {
+     streak += 1;
+     day = addDays(day, -1);
+   }

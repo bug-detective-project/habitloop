@@ -1,0 +1,95 @@
+diff --git a/client/src/components/HabitCard.tsx b/client/src/components/HabitCard.tsx
+index ce5adcc..b55fb06 100644
+--- a/client/src/components/HabitCard.tsx
++++ b/client/src/components/HabitCard.tsx
+@@ -5,7 +5,6 @@ import { useHabits } from '../useHabits.ts';
+ import { currentStreak, doneThisWeek } from '../streak.ts';
+ import { Button } from './buttons.ts';
+ import { HabitForm } from './HabitForm.tsx';
+-import { ProgressRing } from './ProgressRing.tsx';
+ 
+ const Card = styled.li<{ $done: boolean }>`
+   display: flex;
+@@ -104,9 +103,6 @@ export function HabitCard({ habit }: { habit: Habit }) {
+           {habit.weeklyGoal === null ? `${week} this week` : `${week} of ${habit.weeklyGoal} this week`}
+         </Meta>
+       </Info>
+-      {habit.weeklyGoal !== null && (
+-        <ProgressRing done={week} goal={habit.weeklyGoal} label={`Weekly goal of ${habit.name}`} />
+-      )}
+       <EditButton
+         type="button"
+         aria-label={`Edit ${habit.name}`}
+diff --git a/client/src/components/ProgressRing.tsx b/client/src/components/ProgressRing.tsx
+deleted file mode 100644
+index 43fbc0b..0000000
+--- a/client/src/components/ProgressRing.tsx
++++ /dev/null
+@@ -1,67 +0,0 @@
+-import styled from 'styled-components';
+-
+-const SIZE = 44;
+-const STROKE = 5;
+-const RADIUS = (SIZE - STROKE) / 2;
+-const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+-
+-const Ring = styled.div`
+-  position: relative;
+-  flex: none;
+-  width: ${SIZE}px;
+-  height: ${SIZE}px;
+-`;
+-
+-const Track = styled.circle`
+-  fill: none;
+-  stroke: ${({ theme }) => theme.color.border};
+-`;
+-
+-const Bar = styled.circle`
+-  fill: none;
+-  stroke: ${({ theme }) => theme.color.accent};
+-  stroke-linecap: round;
+-  transform: rotate(-90deg);
+-  transform-origin: center;
+-  transition: stroke-dashoffset 0.3s ease;
+-`;
+-
+-const Value = styled.span`
+-  position: absolute;
+-  inset: 0;
+-  display: grid;
+-  place-items: center;
+-  font-size: 0.7rem;
+-  font-weight: 600;
+-`;
+-
+-interface ProgressRingProps {
+-  /** Days done in the week. */
+-  done: number;
+-  /** Days the habit asks for in a week. */
+-  goal: number;
+-  /** What the ring measures, for screen readers. */
+-  label: string;
+-}
+-
+-/** A ring that fills as the week's goal is reached. More days than the goal still read 100%. */
+-export function ProgressRing({ done, goal, label }: ProgressRingProps) {
+-  const percent = Math.min(100, Math.round((done / goal) * 100));
+-
+-  return (
+-    <Ring role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent}>
+-      <svg width={SIZE} height={SIZE} viewBox={`0 0 ${SIZE} ${SIZE}`} aria-hidden="true">
+-        <Track cx={SIZE / 2} cy={SIZE / 2} r={RADIUS} strokeWidth={STROKE} />
+-        <Bar
+-          cx={SIZE / 2}
+-          cy={SIZE / 2}
+-          r={RADIUS}
+-          strokeWidth={STROKE}
+-          strokeDasharray={CIRCUMFERENCE}
+-          strokeDashoffset={CIRCUMFERENCE * (1 - percent / 100)}
+-        />
+-      </svg>
+-      <Value aria-hidden="true">{percent}%</Value>
+-    </Ring>
+-  );
+-}

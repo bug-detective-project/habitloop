@@ -1,0 +1,17 @@
+diff --git a/client/src/components/HabitCard.tsx b/client/src/components/HabitCard.tsx
+index ce5adcc..ee50ccf 100644
+--- a/client/src/components/HabitCard.tsx
++++ b/client/src/components/HabitCard.tsx
+@@ -110,11 +110,7 @@ export function HabitCard({ habit }: { habit: Habit }) {
+       <EditButton
+         type="button"
+         aria-label={`Edit ${habit.name}`}
+-        onClick={(event) => {
+-          // The whole card marks the habit; a click on Edit must not reach it.
+-          event.stopPropagation();
+-          setEditing(true);
+-        }}
++        onClick={() => setEditing(true)}
+       >
+         Edit
+       </EditButton>

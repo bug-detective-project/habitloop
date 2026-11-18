@@ -1,0 +1,14 @@
+diff --git a/client/src/components/WeekPanel.tsx b/client/src/components/WeekPanel.tsx
+index 1020900..45e7290 100644
+--- a/client/src/components/WeekPanel.tsx
++++ b/client/src/components/WeekPanel.tsx
+@@ -87,8 +87,7 @@ export function WeekPanel() {
+ 
+   useEffect(() => {
+     void load();
+-    const timer = setInterval(() => void load(), REFRESH_MS);
+-    return () => clearInterval(timer);
++    setInterval(() => void load(), REFRESH_MS);
+   }, [load]);
+ 
+   async function toggle(row: SummaryRow, day: string) {

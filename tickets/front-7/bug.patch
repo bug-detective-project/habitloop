@@ -1,0 +1,44 @@
+diff --git a/client/src/components/WeekPanel.tsx b/client/src/components/WeekPanel.tsx
+index 1020900..fd646b8 100644
+--- a/client/src/components/WeekPanel.tsx
++++ b/client/src/components/WeekPanel.tsx
+@@ -1,4 +1,4 @@
+-import { useCallback, useEffect, useRef, useState } from 'react';
++import { useCallback, useEffect, useState } from 'react';
+ import styled from 'styled-components';
+ import { fetchSummary } from '../api/habits.ts';
+ import type { Summary, SummaryRow } from '../api/habits.ts';
+@@ -67,21 +67,13 @@ export function WeekPanel() {
+   const { toggleDay } = useHabits();
+   const [summary, setSummary] = useState<Summary | null>(null);
+   const [failed, setFailed] = useState(false);
+-  // The number of the newest request. An answer is used only while its request is still the newest.
+-  const newestRef = useRef(0);
+ 
+   const load = useCallback(async () => {
+-    const request = ++newestRef.current;
+     try {
+-      const data = await fetchSummary();
+-      if (request === newestRef.current) {
+-        setSummary(data);
+-        setFailed(false);
+-      }
++      setSummary(await fetchSummary());
++      setFailed(false);
+     } catch {
+-      if (request === newestRef.current) {
+-        setFailed(true);
+-      }
++      setFailed(true);
+     }
+   }, []);
+ 
+@@ -92,8 +84,6 @@ export function WeekPanel() {
+   }, [load]);
+ 
+   async function toggle(row: SummaryRow, day: string) {
+-    // A request that is on its way was asked before this change: its answer is out of date.
+-    newestRef.current += 1;
+     setSummary((current) =>
+       current ? { ...current, habits: current.habits.map((item) => (item.id === row.id ? withDay(item, day) : item)) } : current,
+     );

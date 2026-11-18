@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Compare the screen with the server: mark a habit, then look at `GET /api/habits` in the Network tab or reload the page. Only one habit was saved, so the request is right and the screen is wrong. Which component keeps something about \"done\" in its own state?",
+    "Each `HabitCard` keeps a `done` state so the card answers the click at once. When you mark the first habit the list is reordered. Open React DevTools and watch the cards while that happens: does React move a card, or does it keep the card in place and hand it another habit?",
+    "React decides which component is which by the `key` of the list. In `client/src/components/Today.tsx` the key is the position in the list, so after a reorder the first card is \"the same card\" with a new habit, and it keeps the old `done` state. A key must identify the item, not its place."
+  ]
+}

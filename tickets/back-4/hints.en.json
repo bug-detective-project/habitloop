@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Look at the data before the code. The database is the file `server/data/habitloop.db`, and the project already has the library that reads it. In the VS Code terminal, at the root of the project, run:\n\n```sh\nnode -e \"const db = require('better-sqlite3')('server/data/habitloop.db'); console.table(db.prepare('SELECT day, COUNT(*) AS marks FROM checkins WHERE habit_id = 5 GROUP BY day').all())\"\n```\n\nHow many marks does yesterday have, and what does the summary count?",
+    "The table `checkins` has one row per mark, not one per day; the comment in `server/src/db.ts` says so. Now read the query of `weekSummary` in `server/src/repository.ts`: the `LEFT JOIN` brings one row per mark, and the `COUNT` counts those rows.",
+    "The summary needs the number of different days, and `COUNT(c.id)` gives the number of marks. SQL can count each value once: `COUNT(DISTINCT c.day)`."
+  ]
+}

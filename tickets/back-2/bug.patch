@@ -1,0 +1,33 @@
+diff --git a/server/src/routes/habits.ts b/server/src/routes/habits.ts
+index b160cd9..642dfc5 100644
+--- a/server/src/routes/habits.ts
++++ b/server/src/routes/habits.ts
+@@ -51,15 +51,20 @@ export function habitsRouter(db: Db, options: HabitsOptions): Router {
+ 
+   // Every change answers with the list of habits as it is now, so the screen needs no second request.
+   router.post('/', (req, res) => {
+-    const input = parseHabit(req.body);
+-    if (countActiveHabits(db) >= options.maxHabits) {
+-      res.status(409).json({
+-        error: `You reached the limit of ${options.maxHabits} habits. Archive one to add another.`,
+-      });
+-      return;
++    try {
++      const input = parseHabit(req.body);
++      if (countActiveHabits(db) >= options.maxHabits) {
++        res.status(409).json({
++          error: `You reached the limit of ${options.maxHabits} habits. Archive one to add another.`,
++        });
++        return;
++      }
++      createHabit(db, input);
++      res.status(201).json(listHabits(db, options.today()));
++    } catch {
++      // The habit was not saved: the screen gets a list anyway, so it never breaks.
++      res.json([]);
+     }
+-    createHabit(db, input);
+-    res.status(201).json(listHabits(db, options.today()));
+   });
+ 
+   router.patch('/:id', (req, res) => {

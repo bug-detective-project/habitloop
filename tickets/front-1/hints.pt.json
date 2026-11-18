@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Abra o cartão de nome longo no DevTools do navegador e selecione o bloco que tem o nome e a linha de baixo. Qual a largura desse bloco em relação ao cartão?",
+    "O cartão é uma linha flex: o botão de feito, o bloco do nome, o anel e o botão Edit. O nome já tem as três declarações que cortam texto com \"…\". Elas só funcionam quando a caixa em volta do texto é mais estreita que o texto. Qual é a menor largura que um item flex aceita por padrão?",
+    "Um item flex nunca fica mais estreito que o seu conteúdo, a não ser que alguém diga que pode. Olhe o `Info` em `client/src/components/HabitCard.tsx`: ele tem `flex: 1`, e falta algo que o deixe encolher."
+  ]
+}

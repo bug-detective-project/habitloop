@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "The day is saved: the request that marks it answers 204, and the square comes back at the next refresh. So for a moment the screen shows older data than it already had. With throttling on, look at the order in the Network tab: which request was sent first, and which answer arrived last?",
+    "The panel refreshes every 10 seconds. A refresh that was asked before you marked the day carries the days from before the mark. If its answer arrives after your change, `load` in `client/src/components/WeekPanel.tsx` puts it on the screen as if it were news.",
+    "An answer is only worth showing if nothing newer happened since it was asked. Number the requests (a `useRef` counter is enough): `load` remembers its own number and uses the answer only if that is still the newest one, and marking a day makes every request already on its way old."
+  ]
+}

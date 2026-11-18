@@ -1,0 +1,99 @@
+diff --git a/server/src/archive.test.ts b/server/src/archive.test.ts
+new file mode 100644
+index 0000000..e634a78
+--- /dev/null
++++ b/server/src/archive.test.ts
+@@ -0,0 +1,49 @@
++import { describe, expect, it } from 'vitest';
++import type { Habit, Summary } from './repository.ts';
++import { testApi } from './test/api.ts';
++
++describe('POST /api/habits/:id/archive', () => {
++  it('answers the list without the habit', async () => {
++    const { api } = testApi();
++    const response = await api.post('/api/habits/8/archive').expect(200);
++
++    const habits = response.body as Habit[];
++    expect(habits).toHaveLength(7);
++    expect(habits.map((habit) => habit.name)).not.toContain('Call a friend');
++  });
++
++  it('takes the habit out of the list and of the summary', async () => {
++    const { api } = testApi();
++    await api.post('/api/habits/8/archive').expect(200);
++
++    const habits = (await api.get('/api/habits').expect(200)).body as Habit[];
++    const summary = (await api.get('/api/summary').expect(200)).body as Summary;
++    expect(habits.map((habit) => habit.id)).not.toContain(8);
++    expect(summary.habits.map((habit) => habit.id)).not.toContain(8);
++  });
++
++  it('keeps the history of the habit in the database', async () => {
++    const { api, db } = testApi();
++    await api.post('/api/habits/8/archive').expect(200);
++
++    const habit = db.prepare('SELECT archived_at FROM habits WHERE id = 8').get() as { archived_at: string | null };
++    const marks = db.prepare('SELECT COUNT(*) AS count FROM checkins WHERE habit_id = 8').get() as { count: number };
++    expect(habit.archived_at).not.toBeNull();
++    expect(marks.count).toBe(2);
++  });
++
++  it('answers 404 for a habit that does not exist or is already archived', async () => {
++    const { api } = testApi();
++    await api.post('/api/habits/999/archive').expect(404);
++    await api.post('/api/habits/8/archive').expect(200);
++    await api.post('/api/habits/8/archive').expect(404);
++  });
++
++  it('refuses changes to an archived habit', async () => {
++    const { api } = testApi();
++    await api.post('/api/habits/8/archive').expect(200);
++
++    await api.patch('/api/habits/8').send({ name: 'Back again' }).expect(404);
++    await api.post('/api/habits/8/checkins').send({ day: '2026-03-18' }).expect(404);
++  });
++});
+diff --git a/server/src/repository.ts b/server/src/repository.ts
+index 4428294..080cdd4 100644
+--- a/server/src/repository.ts
++++ b/server/src/repository.ts
+@@ -77,6 +77,11 @@ export function updateHabit(db: Db, id: number, input: HabitInput): void {
+   db.prepare('UPDATE habits SET name = ?, weekly_goal = ? WHERE id = ?').run(input.name, input.weeklyGoal, id);
+ }
+ 
++/** Takes the habit out of the lists. Its history stays in the database. */
++export function archiveHabit(db: Db, id: number): void {
++  db.prepare('UPDATE habits SET archived_at = ? WHERE id = ?').run(new Date().toISOString(), id);
++}
++
+ export function markDay(db: Db, habitId: number, day: string): void {
+   db.prepare('INSERT INTO checkins (habit_id, day, created_at) VALUES (?, ?, ?)').run(
+     habitId,
+diff --git a/server/src/routes/habits.ts b/server/src/routes/habits.ts
+index 076cf61..b160cd9 100644
+--- a/server/src/routes/habits.ts
++++ b/server/src/routes/habits.ts
+@@ -3,6 +3,7 @@ import type { Request, Response } from 'express';
+ import type { Db } from '../db.ts';
+ import { isDay } from '../dates.ts';
+ import {
++  archiveHabit,
+   countActiveHabits,
+   createHabit,
+   habitExists,
+@@ -70,6 +71,15 @@ export function habitsRouter(db: Db, options: HabitsOptions): Router {
+     res.json(listHabits(db, options.today()));
+   });
+ 
++  router.post('/:id/archive', (req, res) => {
++    const id = habitId(req, res);
++    if (id === undefined) {
++      return;
++    }
++    archiveHabit(db, id);
++    res.json(listHabits(db, options.today()));
++  });
++
+   router.post('/:id/checkins', (req, res) => {
+     const id = habitId(req, res);
+     if (id === undefined) {

@@ -1,0 +1,26 @@
+diff --git a/server/src/routes/habits.ts b/server/src/routes/habits.ts
+index b160cd9..e2652ae 100644
+--- a/server/src/routes/habits.ts
++++ b/server/src/routes/habits.ts
+@@ -14,6 +14,9 @@ import {
+ } from '../repository.ts';
+ import { parseHabit, ValidationError } from '../validation.ts';
+ 
++/** How many active habits one installation may have. */
++const MAX_HABITS = 20;
++
+ export interface HabitsOptions {
+   maxHabits: number;
+   /** The date the server calls today. */
+@@ -52,9 +55,9 @@ export function habitsRouter(db: Db, options: HabitsOptions): Router {
+   // Every change answers with the list of habits as it is now, so the screen needs no second request.
+   router.post('/', (req, res) => {
+     const input = parseHabit(req.body);
+-    if (countActiveHabits(db) >= options.maxHabits) {
++    if (countActiveHabits(db) >= MAX_HABITS) {
+       res.status(409).json({
+-        error: `You reached the limit of ${options.maxHabits} habits. Archive one to add another.`,
++        error: `You reached the limit of ${MAX_HABITS} habits. Archive one to add another.`,
+       });
+       return;
+     }

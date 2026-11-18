@@ -1,0 +1,47 @@
+diff --git a/client/src/components/Today.tsx b/client/src/components/Today.tsx
+index 3ba350c..e9ce79e 100644
+--- a/client/src/components/Today.tsx
++++ b/client/src/components/Today.tsx
+@@ -47,18 +47,6 @@ function bestStreak(habits: Habit[], today: string): { habit: Habit; streak: num
+ export function Today() {
+   const { today, habits } = useHabits();
+ 
+-  if (habits.length === 0) {
+-    return (
+-      <Section aria-labelledby="today-heading">
+-        <Heading id="today-heading">{longDay(today)}</Heading>
+-        <Empty>
+-          <strong>No habits yet</strong>
+-          <Lead>Create your first habit with the New habit button.</Lead>
+-        </Empty>
+-      </Section>
+-    );
+-  }
+-
+   const best = bestStreak(habits, today);
+   const pending = habits.filter((habit) => !habit.days.includes(today));
+   const done = habits.filter((habit) => habit.days.includes(today));
+@@ -71,11 +59,18 @@ export function Today() {
+           ? `Longest streak: ${best.habit.name}, ${best.streak} ${best.streak === 1 ? 'day' : 'days'}`
+           : 'No streak running. Today is a good day to start one.'}
+       </Lead>
+-      <List aria-label="Habits">
+-        {[...pending, ...done].map((habit) => (
+-          <HabitCard key={habit.id} habit={habit} />
+-        ))}
+-      </List>
++      {habits.length === 0 ? (
++        <Empty>
++          <strong>No habits yet</strong>
++          <Lead>Create your first habit with the New habit button.</Lead>
++        </Empty>
++      ) : (
++        <List aria-label="Habits">
++          {[...pending, ...done].map((habit) => (
++            <HabitCard key={habit.id} habit={habit} />
++          ))}
++        </List>
++      )}
+     </Section>
+   );
+ }

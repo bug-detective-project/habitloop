@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Compare a tela com o servidor: marque um hábito e depois olhe o `GET /api/habits` na aba Network, ou recarregue a página. Só um hábito foi salvo, então a requisição está certa e a tela está errada. Que componente guarda algo sobre \"feito\" no próprio estado?",
+    "Cada `HabitCard` guarda um estado `done`, para o cartão responder ao clique na hora. Quando você marca o primeiro hábito, a lista é reordenada. Abra o React DevTools e observe os cartões enquanto isso acontece: o React move um cartão, ou mantém o cartão no lugar e entrega a ele outro hábito?",
+    "O React decide qual componente é qual pela `key` da lista. Em `client/src/components/Today.tsx` a key é a posição na lista, então, depois de uma reordenação, o primeiro cartão é \"o mesmo cartão\" com um hábito novo, e ele mantém o estado `done` antigo. Uma key precisa identificar o item, não o lugar dele."
+  ]
+}

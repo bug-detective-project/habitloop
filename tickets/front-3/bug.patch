@@ -1,0 +1,15 @@
+diff --git a/client/src/components/Today.tsx b/client/src/components/Today.tsx
+index 3ba350c..7ce7059 100644
+--- a/client/src/components/Today.tsx
++++ b/client/src/components/Today.tsx
+@@ -72,8 +72,8 @@ export function Today() {
+           : 'No streak running. Today is a good day to start one.'}
+       </Lead>
+       <List aria-label="Habits">
+-        {[...pending, ...done].map((habit) => (
+-          <HabitCard key={habit.id} habit={habit} />
++        {[...pending, ...done].map((habit, index) => (
++          <HabitCard key={index} habit={habit} />
+         ))}
+       </List>
+     </Section>

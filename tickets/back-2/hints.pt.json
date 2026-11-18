@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Comece pela API, não pela tela: envie um hábito de nome vazio com `curl -i` e leia a linha de status e o corpo. Depois envie o mesmo nome vazio em um `PATCH /api/habits/3`. As duas rotas validam com a mesma função; por que respondem diferente?",
+    "Leia os dois manipuladores em `server/src/routes/habits.ts`. Os dois chamam `parseHabit`, que lança um `ValidationError` para um corpo ruim. No `PATCH` o erro sobe até o `handleErrors` em `server/src/app.ts`, que responde 400. O que acontece com ele no `POST`?",
+    "O manipulador do `POST` envolve tudo em um `try` cujo `catch` responde `res.json([])`: todo erro, de qualquer tipo, vira um 200 com lista vazia. A tela confia no 200 e mostra a lista que recebeu. Deixe o erro chegar ao tratador de erros do app, que já sabe responder."
+  ]
+}

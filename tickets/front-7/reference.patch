@@ -1,0 +1,110 @@
+diff --git a/client/src/components/WeekPanel.stale.test.tsx b/client/src/components/WeekPanel.stale.test.tsx
+new file mode 100644
+index 0000000..f526a74
+--- /dev/null
++++ b/client/src/components/WeekPanel.stale.test.tsx
+@@ -0,0 +1,60 @@
++import { act, screen, waitFor, within } from '@testing-library/react';
++import userEvent from '@testing-library/user-event';
++import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
++import { createTestHabits, json, mockApi, summaryOf } from '../test/mockApi.ts';
++import { renderApp } from '../test/renderApp.tsx';
++
++describe('an answer of the refresh that arrives late', () => {
++  beforeEach(() => {
++    vi.useFakeTimers({ shouldAdvanceTime: true });
++  });
++
++  afterEach(() => {
++    vi.useRealTimers();
++  });
++
++  it('does not undo a day that was marked after the refresh was asked', async () => {
++    // The second request for the summary is held: it answers only when the test says so, with
++    // the days as they were when it was asked.
++    let summaries = 0;
++    let release: (response: Response) => void = () => {};
++    const held = new Promise<Response>((resolve) => {
++      release = resolve;
++    });
++    mockApi({
++      respond: (request) => {
++        if (request.path === '/api/summary') {
++          summaries += 1;
++          return summaries === 2 ? held : undefined;
++        }
++        return undefined;
++      },
++    });
++    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
++    await renderApp();
++
++    await user.click(screen.getByRole('button', { name: 'Last 7 days' }));
++    const panel = await screen.findByRole('complementary', { name: 'Last 7 days' });
++    const day = await within(panel).findByRole('button', { name: 'Stretch, Tuesday, March 17' });
++
++    // The refresh starts and waits for its answer.
++    await vi.advanceTimersByTimeAsync(10_000);
++    expect(summaries).toBe(2);
++
++    // The user marks the day; the panel saves it and reads the summary again.
++    await user.click(day);
++    await waitFor(() => {
++      expect(summaries).toBe(3);
++    });
++    await waitFor(() => {
++      expect(day).toHaveAttribute('aria-pressed', 'true');
++    });
++
++    // Only now the old answer arrives, without the new day.
++    release(json(summaryOf(createTestHabits())));
++    await act(() => new Promise((resolve) => setTimeout(resolve, 100)));
++
++    expect(day).toHaveAttribute('aria-pressed', 'true');
++    expect(within(screen.getByTestId('week-4')).getByTestId('progress')).toHaveTextContent('1 day');
++  });
++});
+diff --git a/client/src/components/WeekPanel.tsx b/client/src/components/WeekPanel.tsx
+index fd646b8..1020900 100644
+--- a/client/src/components/WeekPanel.tsx
++++ b/client/src/components/WeekPanel.tsx
+@@ -1,4 +1,4 @@
+-import { useCallback, useEffect, useState } from 'react';
++import { useCallback, useEffect, useRef, useState } from 'react';
+ import styled from 'styled-components';
+ import { fetchSummary } from '../api/habits.ts';
+ import type { Summary, SummaryRow } from '../api/habits.ts';
+@@ -67,13 +67,21 @@ export function WeekPanel() {
+   const { toggleDay } = useHabits();
+   const [summary, setSummary] = useState<Summary | null>(null);
+   const [failed, setFailed] = useState(false);
++  // The number of the newest request. An answer is used only while its request is still the newest.
++  const newestRef = useRef(0);
+ 
+   const load = useCallback(async () => {
++    const request = ++newestRef.current;
+     try {
+-      setSummary(await fetchSummary());
+-      setFailed(false);
++      const data = await fetchSummary();
++      if (request === newestRef.current) {
++        setSummary(data);
++        setFailed(false);
++      }
+     } catch {
+-      setFailed(true);
++      if (request === newestRef.current) {
++        setFailed(true);
++      }
+     }
+   }, []);
+ 
+@@ -84,6 +92,8 @@ export function WeekPanel() {
+   }, [load]);
+ 
+   async function toggle(row: SummaryRow, day: string) {
++    // A request that is on its way was asked before this change: its answer is out of date.
++    newestRef.current += 1;
+     setSummary((current) =>
+       current ? { ...current, habits: current.habits.map((item) => (item.id === row.id ? withDay(item, day) : item)) } : current,
+     );

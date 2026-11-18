@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "See what is missing first: `curl -i -X POST http://localhost:3001/api/habits/8/archive` answers 404 \"Not found\", the answer of a route that does not exist. Then read the other routes of `server/src/routes/habits.ts`: `PATCH /:id` is the closest to what you need (find the habit, change it, answer the list).",
+    "Split it in two, like the rest of the file. In `server/src/repository.ts`, a function that sets `archived_at` of one habit with an `UPDATE`. In the router, `router.post('/:id/archive', …)` that uses `habitId(req, res)` to get the id (it already answers the 404), calls the function and answers `listHabits(db, options.today())`.",
+    "For the date, `new Date().toISOString()` is what `created_at` already uses. You do not need to touch the queries that list habits: they already have `WHERE archived_at IS NULL`, and so does `countActiveHabits`, which is why the limit follows for free."
+  ]
+}

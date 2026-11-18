@@ -1,0 +1,57 @@
+diff --git a/server/src/habit-limit.test.ts b/server/src/habit-limit.test.ts
+new file mode 100644
+index 0000000..e73727c
+--- /dev/null
++++ b/server/src/habit-limit.test.ts
+@@ -0,0 +1,25 @@
++import { describe, expect, it } from 'vitest';
++import type { Habit } from './repository.ts';
++import { testApi } from './test/api.ts';
++
++describe('the limit of habits', () => {
++  it('is the one of the settings, not a fixed number', async () => {
++    // The sample has 8 habits: with a limit of 9 there is room for one more.
++    const { api } = testApi({ maxHabits: 9 });
++
++    await api.post('/api/habits').send({ name: 'Floss' }).expect(201);
++    const response = await api.post('/api/habits').send({ name: 'Nap' }).expect(409);
++
++    expect((response.body as { error: string }).error).toBe('You reached the limit of 9 habits. Archive one to add another.');
++    expect((await api.get('/api/habits')).body as Habit[]).toHaveLength(9);
++  });
++
++  it('allows more habits when the settings say so', async () => {
++    const { api } = testApi({ maxHabits: 30 });
++
++    for (let index = 0; index < 15; index += 1) {
++      await api.post('/api/habits').send({ name: `Habit ${index}` }).expect(201);
++    }
++    expect((await api.get('/api/habits')).body as Habit[]).toHaveLength(23);
++  });
++});
+diff --git a/server/src/routes/habits.ts b/server/src/routes/habits.ts
+index e2652ae..b160cd9 100644
+--- a/server/src/routes/habits.ts
++++ b/server/src/routes/habits.ts
+@@ -14,9 +14,6 @@ import {
+ } from '../repository.ts';
+ import { parseHabit, ValidationError } from '../validation.ts';
+ 
+-/** How many active habits one installation may have. */
+-const MAX_HABITS = 20;
+-
+ export interface HabitsOptions {
+   maxHabits: number;
+   /** The date the server calls today. */
+@@ -55,9 +52,9 @@ export function habitsRouter(db: Db, options: HabitsOptions): Router {
+   // Every change answers with the list of habits as it is now, so the screen needs no second request.
+   router.post('/', (req, res) => {
+     const input = parseHabit(req.body);
+-    if (countActiveHabits(db) >= MAX_HABITS) {
++    if (countActiveHabits(db) >= options.maxHabits) {
+       res.status(409).json({
+-        error: `You reached the limit of ${MAX_HABITS} habits. Archive one to add another.`,
++        error: `You reached the limit of ${options.maxHabits} habits. Archive one to add another.`,
+       });
+       return;
+     }

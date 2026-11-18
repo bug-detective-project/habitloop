@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Start with the component alone, without the drawing: a `<div>` with `role=\"progressbar\"`, the four `aria-` attributes and the percentage as text. Compute the percentage first: `Math.round((done / goal) * 100)`, capped with `Math.min(100, …)`.",
+    "For the drawing, an SVG `<circle>` with `fill: none` and a stroke is a ring. Its length is the circumference, `2 * Math.PI * radius`. With `stroke-dasharray` set to the circumference, `stroke-dashoffset` hides part of the stroke: an offset of `circumference * (1 - percent / 100)` leaves exactly the percentage visible. Rotate the circle by -90 degrees so it starts at the top.",
+    "Use it in `HabitCard`, between `Info` and `EditButton`: `{habit.weeklyGoal !== null && <ProgressRing done={week} goal={habit.weeklyGoal} label={`Weekly goal of ${habit.name}`} />}`. Give the ring `flex: none` so a long name cannot squash it."
+  ]
+}

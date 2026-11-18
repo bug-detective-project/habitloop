@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "O texto vem pronto do servidor: olhe o campo `progress` na resposta de `GET /api/summary` (`curl http://localhost:3001/api/summary`). Compare a linha de um hábito com meta e a de \"Stretch\". Qual o valor de `weeklyGoal` em cada uma?",
+    "No banco, um hábito sem meta tem `NULL` em `weekly_goal`, e o JavaScript o recebe como `null`. Ache onde o servidor monta a linha: `progressLine` em `server/src/repository.ts`. O que uma template string escreve quando o valor dentro de `${…}` é `null`?",
+    "A `progressLine` recebe `weeklyGoal: number | null`, e o tipo já diz: são dois casos. A função escreve a linha só para um deles. Trate o `null` primeiro, com texto próprio e singular e plural próprios."
+  ]
+}

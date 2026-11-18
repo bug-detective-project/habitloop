@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Abra a aba Network e clique em **Edit**: sai uma requisição para `/checkins`, embora o Edit não tenha nada a ver com marcar. Alguma outra coisa está tratando esse mesmo clique. O que no cartão reage a cliques?",
+    "O cartão inteiro (`Card`, um `<li>`) tem um `onClick` que marca o hábito, e o botão Edit fica dentro do cartão. Um clique em um elemento dentro de outro não para ali: depois que o botão o trata, o evento continua subindo pelos pais.",
+    "Essa subida se chama propagação (bubbling). Em `client/src/components/HabitCard.tsx`, o `onClick` do `EditButton` abre o formulário e deixa o evento seguir até o `<li>`. O manipulador recebe o evento: ele pode mandar o evento parar ali."
+  ]
+}

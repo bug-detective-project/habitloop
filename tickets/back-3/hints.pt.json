@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Siga a configuração de fora para dentro. Onde `MAX_HABITS` é lida? O `server/src/config.ts` a põe em `settings.maxHabits`, com 20 como padrão. Confira com um `console.log` ali que o seu valor chega. Chega, então a configuração é lida certo e algo mais adiante não a usa.",
+    "Siga o valor: o `createApp` em `server/src/app.ts` recebe as configurações e passa `maxHabits` ao `habitsRouter` como `options.maxHabits`. Agora leia o manipulador de `POST /` em `server/src/routes/habits.ts`: com que número ele compara a contagem de hábitos?",
+    "A rota compara com uma constante `MAX_HABITS = 20` declarada no topo do arquivo e nunca olha `options.maxHabits`. O padrão e o valor configurado são os dois 20 quando nada é definido, por isso ninguém percebeu. A rota deve usar a opção que recebe, na checagem e na mensagem."
+  ]
+}

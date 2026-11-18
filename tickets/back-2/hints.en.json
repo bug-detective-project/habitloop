@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Start from the API, not from the screen: send a habit with an empty name with `curl -i` and read the status line and the body. Then send the same empty name in a `PATCH /api/habits/3`. The two routes validate with the same function; why do they answer differently?",
+    "Read the two handlers in `server/src/routes/habits.ts`. Both call `parseHabit`, which throws a `ValidationError` for a bad body. In `PATCH` the error travels up to `handleErrors` in `server/src/app.ts`, which answers 400. What happens to it in `POST`?",
+    "The `POST` handler wraps everything in a `try` whose `catch` answers `res.json([])`: every error, of any kind, becomes a 200 with an empty list. The screen trusts the 200 and shows the list it got. Let the error reach the error handler of the app, which already knows how to answer."
+  ]
+}

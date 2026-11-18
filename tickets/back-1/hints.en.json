@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "The text comes ready from the server: look at the `progress` field in the answer of `GET /api/summary` (`curl http://localhost:3001/api/summary`). Compare the row of a habit with a goal and the row of \"Stretch\". What is the value of `weeklyGoal` in each?",
+    "In the database, a habit without a goal has `NULL` in `weekly_goal`, and JavaScript gets it as `null`. Find where the server builds the line: `progressLine` in `server/src/repository.ts`. What does a template string write when the value inside `${…}` is `null`?",
+    "`progressLine` receives `weeklyGoal: number | null`, and the type says it out loud: there are two cases. The function writes the line for one of them only. Handle `null` first, with its own text and its own singular and plural."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Follow the setting from the outside in. Where is `MAX_HABITS` read? `server/src/config.ts` puts it in `settings.maxHabits`, with 20 as the default. Check with a `console.log` there that your value arrives. It does, so the setting is read correctly and something later does not use it.",
+    "Follow the value: `createApp` in `server/src/app.ts` receives the settings and passes `maxHabits` to `habitsRouter` as `options.maxHabits`. Now read the handler of `POST /` in `server/src/routes/habits.ts`: which number does it compare the count of habits with?",
+    "The route compares with a constant `MAX_HABITS = 20` declared at the top of the file and never looks at `options.maxHabits`. The default and the configured value are both 20 when nothing is set, so nobody noticed. The route should use the option it receives, in the check and in the message."
+  ]
+}

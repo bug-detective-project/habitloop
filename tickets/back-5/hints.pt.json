@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Veja primeiro o que falta: `curl -i -X POST http://localhost:3001/api/habits/8/archive` responde 404 \"Not found\", a resposta de uma rota que não existe. Depois leia as outras rotas de `server/src/routes/habits.ts`: o `PATCH /:id` é a mais parecida com o que você precisa (achar o hábito, alterar, responder a lista).",
+    "Divida em dois, como o resto do arquivo. Em `server/src/repository.ts`, uma função que define o `archived_at` de um hábito com um `UPDATE`. No roteador, um `router.post('/:id/archive', …)` que usa `habitId(req, res)` para pegar o id (ele já responde o 404), chama a função e responde `listHabits(db, options.today())`.",
+    "Para a data, `new Date().toISOString()` é o que o `created_at` já usa. Você não precisa mexer nas consultas que listam hábitos: elas já têm `WHERE archived_at IS NULL`, e a `countActiveHabits` também, e é por isso que o limite acompanha de graça."
+  ]
+}

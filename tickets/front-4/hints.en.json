@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Open the Network tab and click **Edit**: a request to `/checkins` goes out, although Edit has nothing to do with marking. Something else is handling that same click. What on the card reacts to clicks?",
+    "The whole card (`Card`, an `<li>`) has an `onClick` that marks the habit, and the Edit button is inside the card. A click on an element inside another one does not stop there: after the button handles it, the event keeps going up through its parents.",
+    "That going up is called bubbling. In `client/src/components/HabitCard.tsx`, the `onClick` of `EditButton` opens the form and lets the event continue to the `<li>`. The handler receives the event: it can tell it to stop there."
+  ]
+}

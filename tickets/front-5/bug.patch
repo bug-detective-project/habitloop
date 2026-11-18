@@ -1,0 +1,18 @@
+diff --git a/client/src/streak.ts b/client/src/streak.ts
+index d1bf0bd..5904a38 100644
+--- a/client/src/streak.ts
++++ b/client/src/streak.ts
+@@ -5,10 +5,10 @@ import { addDays } from './dates.ts';
+  * does not break a streak: when today is not marked, the count starts from yesterday.
+  */
+ export function currentStreak(days: string[], today: string): number {
+-  const marked = new Set(days);
+-  let day = marked.has(today) ? today : addDays(today, -1);
++  // The newest day is the last one of the list: walk back from it while the days are in a row.
++  let day = days.includes(today) ? today : addDays(today, -1);
+   let streak = 0;
+-  while (marked.has(day)) {
++  for (let index = days.length - 1; index >= 0 && days[index] === day; index -= 1) {
+     streak += 1;
+     day = addDays(day, -1);
+   }

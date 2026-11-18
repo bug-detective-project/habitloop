@@ -1,0 +1,14 @@
+diff --git a/server/src/repository.ts b/server/src/repository.ts
+index 080cdd4..37247e2 100644
+--- a/server/src/repository.ts
++++ b/server/src/repository.ts
+@@ -95,8 +95,7 @@ export function unmarkDay(db: Db, habitId: number, day: string): void {
+ }
+ 
+ function progressLine(doneDays: number, weeklyGoal: number | null): string {
+-  const unit = doneDays === 1 ? 'day' : 'days';
+-  return weeklyGoal === null ? `${doneDays} ${unit}` : `${doneDays} of ${weeklyGoal} ${weeklyGoal === 1 ? 'day' : 'days'}`;
++  return `${doneDays} of ${weeklyGoal} ${weeklyGoal === 1 ? 'day' : 'days'}`;
+ }
+ 
+ export function weekSummary(db: Db, today: string): Summary {

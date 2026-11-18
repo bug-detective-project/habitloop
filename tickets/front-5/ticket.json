@@ -1,0 +1,13 @@
+{
+  "type": "fix",
+  "skills": {
+    "en": [
+      "Everyday data structures and algorithms",
+      "Local and derived state"
+    ],
+    "pt": [
+      "Estruturas de dados e algoritmos do dia a dia",
+      "Estado local e derivado"
+    ]
+  }
+}

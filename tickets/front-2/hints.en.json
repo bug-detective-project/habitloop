@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "A white page in a React app almost always means a component threw an error while rendering. Open the browser DevTools, go to the Console and reproduce the problem: what does the red message say, and which file and line does it name?",
+    "The message is about calling `reduce` on an empty array. Follow the stack trace into `client/src/components/Today.tsx` and find the `reduce`. What does `reduce` do when the array is empty and it gets no starting value?",
+    "In `Today`, the line under the heading is computed with `bestStreak(habits, today)` before anything checks whether there are habits. The text \"No habits yet\" exists, but the component never gets that far. Decide what `Today` shows when the list is empty before it asks for the best streak."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "O dia é salvo: a requisição que marca responde 204, e o quadrado volta na atualização seguinte. Então, por um momento, a tela mostra dados mais velhos do que já tinha. Com a limitação ligada, olhe a ordem na aba Network: qual requisição saiu primeiro, e qual resposta chegou por último?",
+    "O painel se atualiza a cada 10 segundos. Uma atualização pedida antes de você marcar o dia traz os dias de antes da marcação. Se a resposta dela chega depois da sua mudança, o `load` em `client/src/components/WeekPanel.tsx` a põe na tela como se fosse novidade.",
+    "Uma resposta só vale a pena mostrar se nada mais novo aconteceu desde que foi pedida. Numere as requisições (um contador em `useRef` basta): o `load` lembra o próprio número e só usa a resposta se ele ainda for o mais novo, e marcar um dia envelhece toda requisição que já está a caminho."
+  ]
+}

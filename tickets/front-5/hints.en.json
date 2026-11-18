@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "The reload fixes it, so the server has the right days. Compare the list of days of the habit before and after you mark yesterday, without reloading: React DevTools shows `days` in the props of the card. Look at the order.",
+    "After you mark a day in the panel, the app adds it to the end of the list of days. The server sends the days oldest first; the app does not put the new day in its place. Now read `currentStreak` in `client/src/streak.ts`: what does it assume about the list?",
+    "`currentStreak` walks the list from the last item backwards and expects each one to be the day before the previous. With yesterday added after today, the last item is not today and the count stops at zero. A streak depends on which days are marked, not on the order they come in: a `Set` answers \"is this day marked?\" without caring about order."
+  ]
+}

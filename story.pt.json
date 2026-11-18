@@ -1,0 +1,108 @@
+{
+  "client": {
+    "name": "Evergreen Wellness",
+    "about": "A Evergreen Wellness é um estúdio pequeno de coaching: alguns coaches e poucas centenas de alunos que cuidam de sono, movimento e alimentação, um hábito de cada vez. O HabitLoop é o app que os alunos abrem toda manhã para marcar o que fizeram, e onde os coaches veem como vai cada semana.",
+    "contacts": "Nora Lindqvist (coach responsável), Samuel Adeyemi (suporte aos membros) e Bianca Rocha (coach de bem-estar) relatam os tickets.",
+    "reporters": [
+      {
+        "name": "Nora Lindqvist",
+        "role": "Coach responsável"
+      },
+      {
+        "name": "Samuel Adeyemi",
+        "role": "Suporte aos membros"
+      },
+      {
+        "name": "Bianca Rocha",
+        "role": "Coach de bem-estar"
+      }
+    ]
+  },
+  "project": {
+    "name": "HabitLoop",
+    "about": "Um aplicativo de hábitos: os hábitos de hoje com a sequência e a semana de cada um, um painel com os últimos sete dias que se atualiza sozinho e um formulário para criar, alterar e arquivar hábitos.",
+    "stack": "React, Vite e styled-components; Node.js e Express; SQLite",
+    "skills": [
+      "Layout e CSS",
+      "Ler erros e depurar",
+      "Renderização e listas",
+      "Plataforma web: DOM e eventos",
+      "Estruturas de dados e algoritmos do dia a dia",
+      "Efeitos e ciclo de vida",
+      "Assincronia e estado",
+      "Criação de componentes",
+      "Linguagem e tipos",
+      "Erros e resiliência",
+      "Configuração e opções de funcionalidade",
+      "Banco de dados e consultas"
+    ]
+  },
+  "messages": {
+    "welcome": {
+      "subject": "Boas-vindas ao projeto HabitLoop!",
+      "body": "Oi, que bom ter você com a gente!\n\nEu sou a Rafaela, gerente de engenharia. Você vai entrar no **HabitLoop**, o aplicativo de hábitos que estamos construindo para a **Evergreen Wellness**, um estúdio de coaching. Os alunos abrem o app toda manhã para marcar o que fizeram e se importam muito com as sequências, então, quando um número está errado, ficamos sabendo no mesmo dia.\n\nComo a gente trabalha:\n\n- Seus tickets aparecem no **Quadro**. Um de cada vez: arraste para **Em andamento** quando começar e para **Em QA** quando achar que terminou. Alguns tickets são bugs para consertar; outros pedem que você construa algo que falta.\n- O código fica no seu container de workspace. **Abrir no VS Code** conecta o seu editor a ele, com Node, terminal e depurador já configurados. Rode `npm run dev` no terminal do VS Code e use **Abrir app no navegador** para testar o app.\n- Os hábitos de exemplo são escritos em relação a hoje, então o app parece vivo sempre que você abre. `npm run db:reset` os repõe quando você quiser começar do zero.\n- O QA roda primeiro os testes do projeto e depois verifica o próprio ticket. Se algo falhar, o card volta com observações.\n- Travou? Mande mensagem para a **Priya** pelo ticket. Ela aponta a direção, uma dica de cada vez.\n\nQuando estiver pronto, clique em **Pegar próxima tarefa**. Escolhi uma boa para começar.\n\nRafaela"
+    },
+    "assignments": {
+      "back-1": {
+        "subject": "Novo ticket: HL-201",
+        "body": "O Samuel recebeu uma captura de tela de um aluno perguntando o que é um \"null day\": hábitos sem meta semanal mostram \"1 of null days\" em **Last 7 days**.\n\nÉ do lado do servidor, e o `curl` é o caminho mais rápido: veja o que `GET /api/summary` responde antes de abrir o navegador.\n\nRafaela"
+      },
+      "back-2": {
+        "subject": "Novo ticket: HL-202",
+        "body": "A Bianca atendeu uma aluna em pânico: ela salvou um hábito de nome muito longo, o formulário fechou, e a lista inteira sumiu até ela recarregar. O hábito novo nunca foi salvo, e nada disse a ela por quê.\n\nComece pela API com `curl -i` e leia o código de status. A tela só está acreditando no que o servidor diz.\n\nRafaela"
+      },
+      "back-3": {
+        "subject": "Novo ticket: HL-203",
+        "body": "A Nora configurou `MAX_HABITS=10` no servidor há um mês, e os alunos continuam criando até 20 hábitos. A configuração parece ser ignorada.\n\nSiga o valor de onde ele é lido até onde deveria ser usado. Inicie o app com a variável definida para ver com os próprios olhos.\n\nRafaela"
+      },
+      "back-4": {
+        "subject": "Novo ticket: HL-204",
+        "body": "O Samuel tem alunos cuja semana soma mais dias do que tem: um hábito com dois dias marcados mostra \"3 of 4 days\". Acontece quando o celular e o computador marcam o mesmo dia.\n\nEste projeto guarda os dados em um arquivo de banco. Olhe as linhas do hábito antes de ler a consulta; a Priya tem um comando para isso, se precisar.\n\nRafaela"
+      },
+      "back-5": {
+        "subject": "Novo ticket: HL-205",
+        "body": "Mais um para construir. O formulário de um hábito tem um botão **Archive** que responde \"Not found\": o cliente e o banco estão prontos, e o endpoint nunca foi escrito.\n\nO ticket lista o que o endpoint responde em cada caso. Leia as outras rotas do arquivo antes de escrever a sua: a maior parte do que você precisa já existe.\n\nRafaela"
+      },
+      "front-1": {
+        "subject": "Novo ticket: HL-101",
+        "body": "A Bianca mandou uma captura de tela de uma aluna: um hábito de nome muito longo quebra o cartão, e o botão **Edit** vai parar fora dele.\n\nÉ pequeno, e um bom jeito de conhecer como o HabitLoop é estilizado. Reproduza primeiro e inspecione o cartão no DevTools do navegador.\n\nRafaela"
+      },
+      "front-2": {
+        "subject": "Novo ticket: HL-102",
+        "body": "O Samuel tem três alunos novos que não passam de uma página branca na primeira visita. Acontece com qualquer pessoa sem hábitos.\n\nEste é sobre deixar o navegador dizer o que quebrou: abra o Console antes de abrir o código.\n\nRafaela"
+      },
+      "front-3": {
+        "subject": "Novo ticket: HL-103",
+        "body": "A Nora achou um estranho: ela marca um hábito, e o hábito seguinte da lista também aparece como feito. Recarregar mostra que só um foi salvo.\n\nO React DevTools vai ajudar mais que a aba Network aqui. Observe o que acontece com os cartões quando a lista muda de ordem.\n\nRafaela"
+      },
+      "front-4": {
+        "subject": "Novo ticket: HL-104",
+        "body": "A Bianca notou que o **Edit** faz duas coisas: abre o formulário e também marca o hábito como feito. Os alunos só veem depois, em uma sequência que não faz sentido.\n\nÉ curto. Observe a aba Network enquanto clica, e pense para onde vai um clique depois que o botão o trata.\n\nRafaela"
+      },
+      "front-5": {
+        "subject": "Novo ticket: HL-105",
+        "body": "A Nora conta que preencher o dia de ontem em **Last 7 days** faz a sequência do hábito sumir, e recarregar a traz de volta com o número certo.\n\nO servidor está certo, então este mora no navegador. Ache a função que conta a sequência e pergunte o que ela espera da entrada.\n\nRafaela"
+      },
+      "front-6": {
+        "subject": "Novo ticket: HL-106",
+        "body": "O Samuel estava olhando a conta da hospedagem e achou a causa sozinho: o painel **Last 7 days** continua consultando o servidor a cada 10 segundos depois de fechado, e cada vez que é aberto acrescenta mais uma consulta.\n\nDeixe a aba Network aberta neste. A pergunta é quem continua rodando depois que o painel some.\n\nRafaela"
+      },
+      "front-7": {
+        "subject": "Novo ticket: HL-107",
+        "body": "A Bianca tem um que só aparece de vez em quando: um dia que ela marca em **Last 7 days** esvazia de novo um segundo depois, e volta sozinho depois de um tempo. Conexões lentas deixam isso frequente.\n\nLigue a limitação de rede no DevTools para ver sempre, e olhe qual resposta chega por último.\n\nRafaela"
+      },
+      "front-8": {
+        "subject": "Novo ticket: HL-108",
+        "body": "Desta vez é para construir. A Nora quer um anel pequeno em cada cartão de hábito, que se enche conforme a meta semanal é atingida; os números já estão no cartão, o componente não.\n\nO ticket diz exatamente o que o anel precisa expor. Comece pelo componente sozinho e pelos valores dele, e deixe o desenho por último.\n\nRafaela"
+      }
+    },
+    "completion": {
+      "subject": "HabitLoop: projeto concluído!",
+      "body": "Você completou toda a trilha de {{track}} do HabitLoop, então este projeto está concluído do seu lado. A Nora diz que os alunos pararam de escrever sobre números estranhos, e o Samuel e a Bianca também agradecem.\n\nVocê pode continuar com as outras trilhas do HabitLoop quando quiser. Novos projetos também estão a caminho.\n\nObrigada pelo esforço.\n\nRafaela"
+    },
+    "trackCompletion": {
+      "subject": "A trilha de {{track}} está concluída!",
+      "body": "Você fechou todos os tickets de {{track}} do HabitLoop. O Samuel percebeu: a caixa de suporte da Evergreen ficou quieta esta semana.\n\nObrigada pelo esforço.\n\nRafaela"
+    }
+  }
+}

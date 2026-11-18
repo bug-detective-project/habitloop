@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Comece pelo componente sozinho, sem o desenho: um `<div>` com `role=\"progressbar\"`, os quatro atributos `aria-` e a porcentagem como texto. Calcule a porcentagem primeiro: `Math.round((done / goal) * 100)`, limitada com `Math.min(100, …)`.",
+    "Para o desenho, um `<circle>` SVG com `fill: none` e um traço é um anel. O comprimento dele é a circunferência, `2 * Math.PI * raio`. Com o `stroke-dasharray` igual à circunferência, o `stroke-dashoffset` esconde parte do traço: um deslocamento de `circunferência * (1 - percent / 100)` deixa visível exatamente a porcentagem. Gire o círculo -90 graus para começar no topo.",
+    "Use no `HabitCard`, entre o `Info` e o `EditButton`: `{habit.weeklyGoal !== null && <ProgressRing done={week} goal={habit.weeklyGoal} label={`Weekly goal of ${habit.name}`} />}`. Dê ao anel `flex: none`, para um nome longo não o espremer."
+  ]
+}

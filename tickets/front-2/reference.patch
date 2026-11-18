@@ -1,0 +1,82 @@
+diff --git a/client/src/components/Today.empty.test.tsx b/client/src/components/Today.empty.test.tsx
+new file mode 100644
+index 0000000..51a94b1
+--- /dev/null
++++ b/client/src/components/Today.empty.test.tsx
+@@ -0,0 +1,29 @@
++import { render, screen } from '@testing-library/react';
++import userEvent from '@testing-library/user-event';
++import { describe, expect, it } from 'vitest';
++import { App } from '../App.tsx';
++import { mockApi } from '../test/mockApi.ts';
++
++describe('the Today list without habits', () => {
++  it('invites the user to create the first habit', async () => {
++    mockApi({ habits: [] });
++    render(<App />);
++
++    expect(await screen.findByText('No habits yet')).toBeInTheDocument();
++    expect(screen.getByRole('heading', { level: 2, name: 'Wednesday, March 18' })).toBeInTheDocument();
++    expect(screen.queryByRole('list', { name: 'Habits' })).not.toBeInTheDocument();
++  });
++
++  it('shows the first habit once it is created', async () => {
++    mockApi({ habits: [] });
++    render(<App />);
++    await screen.findByText('No habits yet');
++
++    await userEvent.click(screen.getByRole('button', { name: 'New habit' }));
++    await userEvent.type(screen.getByLabelText('Name'), 'Floss');
++    await userEvent.click(screen.getByRole('button', { name: 'Save' }));
++
++    expect(await screen.findByRole('heading', { level: 3, name: 'Floss' })).toBeInTheDocument();
++    expect(screen.queryByText('No habits yet')).not.toBeInTheDocument();
++  });
++});
+diff --git a/client/src/components/Today.tsx b/client/src/components/Today.tsx
+index e9ce79e..3ba350c 100644
+--- a/client/src/components/Today.tsx
++++ b/client/src/components/Today.tsx
+@@ -47,6 +47,18 @@ function bestStreak(habits: Habit[], today: string): { habit: Habit; streak: num
+ export function Today() {
+   const { today, habits } = useHabits();
+ 
++  if (habits.length === 0) {
++    return (
++      <Section aria-labelledby="today-heading">
++        <Heading id="today-heading">{longDay(today)}</Heading>
++        <Empty>
++          <strong>No habits yet</strong>
++          <Lead>Create your first habit with the New habit button.</Lead>
++        </Empty>
++      </Section>
++    );
++  }
++
+   const best = bestStreak(habits, today);
+   const pending = habits.filter((habit) => !habit.days.includes(today));
+   const done = habits.filter((habit) => habit.days.includes(today));
+@@ -59,18 +71,11 @@ export function Today() {
+           ? `Longest streak: ${best.habit.name}, ${best.streak} ${best.streak === 1 ? 'day' : 'days'}`
+           : 'No streak running. Today is a good day to start one.'}
+       </Lead>
+-      {habits.length === 0 ? (
+-        <Empty>
+-          <strong>No habits yet</strong>
+-          <Lead>Create your first habit with the New habit button.</Lead>
+-        </Empty>
+-      ) : (
+-        <List aria-label="Habits">
+-          {[...pending, ...done].map((habit) => (
+-            <HabitCard key={habit.id} habit={habit} />
+-          ))}
+-        </List>
+-      )}
++      <List aria-label="Habits">
++        {[...pending, ...done].map((habit) => (
++          <HabitCard key={habit.id} habit={habit} />
++        ))}
++      </List>
+     </Section>
+   );
+ }

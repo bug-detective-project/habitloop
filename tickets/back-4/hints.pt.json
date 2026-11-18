@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Olhe os dados antes do código. O banco é o arquivo `server/data/habitloop.db`, e o projeto já tem a biblioteca que o lê. No terminal do VS Code, na raiz do projeto, rode:\n\n```sh\nnode -e \"const db = require('better-sqlite3')('server/data/habitloop.db'); console.table(db.prepare('SELECT day, COUNT(*) AS marks FROM checkins WHERE habit_id = 5 GROUP BY day').all())\"\n```\n\nQuantas marcações o dia de ontem tem, e o que o resumo conta?",
+    "A tabela `checkins` tem uma linha por marcação, não uma por dia; o comentário em `server/src/db.ts` diz isso. Agora leia a consulta de `weekSummary` em `server/src/repository.ts`: o `LEFT JOIN` traz uma linha por marcação, e o `COUNT` conta essas linhas.",
+    "O resumo precisa do número de dias diferentes, e `COUNT(c.id)` dá o número de marcações. O SQL sabe contar cada valor uma vez: `COUNT(DISTINCT c.day)`."
+  ]
+}

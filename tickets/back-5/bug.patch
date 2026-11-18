@@ -1,0 +1,44 @@
+diff --git a/server/src/repository.ts b/server/src/repository.ts
+index 080cdd4..4428294 100644
+--- a/server/src/repository.ts
++++ b/server/src/repository.ts
+@@ -77,11 +77,6 @@ export function updateHabit(db: Db, id: number, input: HabitInput): void {
+   db.prepare('UPDATE habits SET name = ?, weekly_goal = ? WHERE id = ?').run(input.name, input.weeklyGoal, id);
+ }
+ 
+-/** Takes the habit out of the lists. Its history stays in the database. */
+-export function archiveHabit(db: Db, id: number): void {
+-  db.prepare('UPDATE habits SET archived_at = ? WHERE id = ?').run(new Date().toISOString(), id);
+-}
+-
+ export function markDay(db: Db, habitId: number, day: string): void {
+   db.prepare('INSERT INTO checkins (habit_id, day, created_at) VALUES (?, ?, ?)').run(
+     habitId,
+diff --git a/server/src/routes/habits.ts b/server/src/routes/habits.ts
+index b160cd9..076cf61 100644
+--- a/server/src/routes/habits.ts
++++ b/server/src/routes/habits.ts
+@@ -3,7 +3,6 @@ import type { Request, Response } from 'express';
+ import type { Db } from '../db.ts';
+ import { isDay } from '../dates.ts';
+ import {
+-  archiveHabit,
+   countActiveHabits,
+   createHabit,
+   habitExists,
+@@ -71,15 +70,6 @@ export function habitsRouter(db: Db, options: HabitsOptions): Router {
+     res.json(listHabits(db, options.today()));
+   });
+ 
+-  router.post('/:id/archive', (req, res) => {
+-    const id = habitId(req, res);
+-    if (id === undefined) {
+-      return;
+-    }
+-    archiveHabit(db, id);
+-    res.json(listHabits(db, options.today()));
+-  });
+-
+   router.post('/:id/checkins', (req, res) => {
+     const id = habitId(req, res);
+     if (id === undefined) {

@@ -1,0 +1,13 @@
+diff --git a/server/src/repository.ts b/server/src/repository.ts
+index 080cdd4..b7e15d2 100644
+--- a/server/src/repository.ts
++++ b/server/src/repository.ts
+@@ -104,7 +104,7 @@ export function weekSummary(db: Db, today: string): Summary {
+   const first = days[0]!;
+   const rows = db
+     .prepare(
+-      `SELECT h.id, h.name, h.weekly_goal, COUNT(DISTINCT c.day) AS done_days
++      `SELECT h.id, h.name, h.weekly_goal, COUNT(c.id) AS done_days
+        FROM habits h
+        LEFT JOIN checkins c ON c.habit_id = h.id AND c.day BETWEEN ? AND ?
+        WHERE h.archived_at IS NULL

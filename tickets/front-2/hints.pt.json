@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Uma página branca em um app React quase sempre quer dizer que um componente lançou um erro durante a renderização. Abra o DevTools do navegador, vá ao Console e reproduza o problema: o que diz a mensagem vermelha, e que arquivo e linha ela aponta?",
+    "A mensagem fala de chamar `reduce` em um array vazio. Siga a pilha até `client/src/components/Today.tsx` e ache o `reduce`. O que o `reduce` faz quando o array está vazio e ele não recebe um valor inicial?",
+    "No `Today`, a linha abaixo do título é calculada com `bestStreak(habits, today)` antes de qualquer coisa conferir se há hábitos. O texto \"No habits yet\" existe, mas o componente nunca chega até ele. Decida o que o `Today` mostra com a lista vazia antes de pedir a melhor sequência."
+  ]
+}
