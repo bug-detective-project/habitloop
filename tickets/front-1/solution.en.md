@@ -4,7 +4,7 @@
 
 ## Step by step
 
-1. **See it in DevTools.** Select the block of the name in the long card: it is wider than the card itself.
+1. **See it in DevTools.** With a narrow window, select the block of the name in the long card: it is wider than the card itself.
 2. **Let the block shrink.** Add `min-width: 0;` to `Info`:
 
    ```ts

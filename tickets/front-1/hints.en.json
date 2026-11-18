@@ -1,6 +1,6 @@
 {
   "hints": [
-    "Open the long-named card in the browser DevTools and select the block that holds the name and the line under it. How wide is that block compared with the card?",
+    "Make the window narrow, open the long-named card in the browser DevTools and select the block that holds the name and the line under it. How wide is that block compared with the card?",
     "The card is a flex row: the done button, the block with the name, the ring and the Edit button. The name already has the three declarations that cut text with \"…\". They only work when the box around the text is narrower than the text. What is the smallest width a flex item accepts by default?",
     "A flex item never becomes narrower than its content unless it is told it may. Look at `Info` in `client/src/components/HabitCard.tsx`: it has `flex: 1`, and something that lets it shrink is missing."
   ]

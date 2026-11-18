@@ -4,7 +4,7 @@
 
 ## Passo a passo
 
-1. **Veja no DevTools.** Selecione o bloco do nome no cartão longo: ele é mais largo que o próprio cartão.
+1. **Veja no DevTools.** Com a janela estreita, selecione o bloco do nome no cartão longo: ele é mais largo que o próprio cartão.
 2. **Deixe o bloco encolher.** Adicione `min-width: 0;` ao `Info`:
 
    ```ts

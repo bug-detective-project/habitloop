@@ -16,15 +16,15 @@
 
 ## Description
 
-One of my members named a habit "Write three things I am grateful for in the paper journal before going to bed". On her Today list that card is broken: the name takes the whole line and the ring and the **Edit** button hang outside the card, over the edge of the page. On her phone the whole page scrolls sideways because of it.
+One of my members named a habit "Write three things I am grateful for in the paper journal before going to bed". On her Today list that card is broken: on her phone the name takes the whole line and the ring and the **Edit** button hang outside the card, over the edge of the page, and the whole page scrolls sideways because of it. On my computer I only see it when I make the window narrow.
 
 Every other card is fine.
 
 ## Steps to reproduce
 
 1. Open HabitLoop.
-2. Find the habit with the long name in the Today list.
-3. Look at the right side of its card, then make the window narrower.
+2. Make the window as narrow as a phone (or use the device toolbar of the DevTools).
+3. Find the habit with the long name in the Today list and look at the right side of its card.
 
 ## Expected result
 
@@ -43,7 +43,7 @@ The name is shown whole on one line, and the ring and the **Edit** button are pu
 ## Environment
 
 - HabitLoop 1.0, Chrome
-- Seen at every window width; worst on a phone
+- Seen on phones and in narrow windows; in a wide window the name fits
 
 ## Activity
 
