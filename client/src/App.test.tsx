@@ -59,6 +59,7 @@ describe('the Today list', () => {
 
   it('puts the day back and says why when the change is refused', async () => {
     mockApi({
+      habits: [{ id: 3, name: 'Morning walk', weeklyGoal: 3, days: ['2026-03-16', '2026-03-17'] }],
       respond: (request) => (request.method === 'POST' ? json({ error: 'The database is locked' }, 500) : undefined),
     });
     await renderApp();
