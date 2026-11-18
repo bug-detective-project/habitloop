@@ -1,0 +1,354 @@
+{
+  "format": "bug-detective-project",
+  "formatVersion": 1,
+  "project": {
+    "id": "habitloop",
+    "name": "HabitLoop",
+    "difficulty": "beginner",
+    "stack": {
+      "frontend": "React · Vite · styled-components",
+      "backend": "Node.js · Express",
+      "database": "SQLite"
+    }
+  },
+  "version": "1.0.0",
+  "createdAt": "2026-11-18T14:12:20.909Z",
+  "tickets": {
+    "total": 13,
+    "front": 8,
+    "back": 5
+  },
+  "entries": [
+    {
+      "id": "front-1",
+      "track": "front",
+      "order": 1,
+      "branch": "front-1",
+      "tag": "front-1-v1.0.0",
+      "commit": "2a08bca787aa7bea031082f9322434a291599fa9",
+      "commitMessage": "HabitLoop release front-1",
+      "codeDigest": "sha256:a3c013d1f69db442c88c9cd719efcc1d5ccb0346b32f72ce3b1e2e83f8eabc86",
+      "codeFiles": 75,
+      "package": {
+        "path": "tickets/front-1",
+        "files": 32,
+        "digest": "sha256:3e33380094e53a7c9e2ee883f7ffb383f19540812062e780f40c7ed6e41900bd"
+      },
+      "type": "fix",
+      "skills": {
+        "en": [
+          "Layout and CSS"
+        ],
+        "pt": [
+          "Layout e CSS"
+        ]
+      }
+    },
+    {
+      "id": "front-2",
+      "track": "front",
+      "order": 2,
+      "branch": "front-2",
+      "tag": "front-2-v1.0.0",
+      "commit": "bae925cfbc5fb6a10ca08d1cddcc4066acfa54e4",
+      "commitMessage": "HabitLoop release front-2",
+      "codeDigest": "sha256:423298be0c1cb7bb118806b934bb93b659c5e2652d7abaa6e9738d9e109296a2",
+      "codeFiles": 75,
+      "package": {
+        "path": "tickets/front-2",
+        "files": 32,
+        "digest": "sha256:ccc794c38706cccab6895b1d64a2921e64c3d83d482d198d51e24bc4f583f8d3"
+      },
+      "type": "fix",
+      "skills": {
+        "en": [
+          "Reading errors and debugging",
+          "Rendering and lists"
+        ],
+        "pt": [
+          "Ler erros e depurar",
+          "Renderização e listas"
+        ]
+      }
+    },
+    {
+      "id": "front-3",
+      "track": "front",
+      "order": 3,
+      "branch": "front-3",
+      "tag": "front-3-v1.0.0",
+      "commit": "41f35ed3156a1edc30763a5576c4ccede3b756af",
+      "commitMessage": "HabitLoop release front-3",
+      "codeDigest": "sha256:5fd83f480b2944785ae75cfdbec23e17df4084bb0e4ff0b0d5603140edb8fed2",
+      "codeFiles": 75,
+      "package": {
+        "path": "tickets/front-3",
+        "files": 32,
+        "digest": "sha256:b7cd0d58583382372ef0088180dc9353b2a9a20a8bff3b31628ca33af45cab08"
+      },
+      "type": "fix",
+      "skills": {
+        "en": [
+          "Rendering and lists"
+        ],
+        "pt": [
+          "Renderização e listas"
+        ]
+      }
+    },
+    {
+      "id": "front-4",
+      "track": "front",
+      "order": 4,
+      "branch": "front-4",
+      "tag": "front-4-v1.0.0",
+      "commit": "0eff7a8d82588c8ba46db049387ec3ca4a4ee60b",
+      "commitMessage": "HabitLoop release front-4",
+      "codeDigest": "sha256:479f1ce0cdb85ac9e5c3aa4128ede7e64e1198c492d72677f8eb878c60dbc6f9",
+      "codeFiles": 75,
+      "package": {
+        "path": "tickets/front-4",
+        "files": 32,
+        "digest": "sha256:090c9c75d5b95ca60ff239173b2b94b29638c2b10d04c833b486c02724de412d"
+      },
+      "type": "fix",
+      "skills": {
+        "en": [
+          "Web platform: DOM and events"
+        ],
+        "pt": [
+          "Plataforma web: DOM e eventos"
+        ]
+      }
+    },
+    {
+      "id": "front-5",
+      "track": "front",
+      "order": 5,
+      "branch": "front-5",
+      "tag": "front-5-v1.0.0",
+      "commit": "d07d91fb680f4b4b0cec4cb79f3f0c05e58ac3ee",
+      "commitMessage": "HabitLoop release front-5",
+      "codeDigest": "sha256:7311c36bf38a7bdbb24d4eee7d8526a8b370cbacf86daf5e04089ea7114c843c",
+      "codeFiles": 74,
+      "package": {
+        "path": "tickets/front-5",
+        "files": 31,
+        "digest": "sha256:1f0d2eb536a44083dd5e4a7ab00e506829dd7803b8312d63a8c50fd6ce8492dc"
+      },
+      "type": "fix",
+      "skills": {
+        "en": [
+          "Everyday data structures and algorithms",
+          "Local and derived state"
+        ],
+        "pt": [
+          "Estruturas de dados e algoritmos do dia a dia",
+          "Estado local e derivado"
+        ]
+      }
+    },
+    {
+      "id": "front-6",
+      "track": "front",
+      "order": 6,
+      "branch": "front-6",
+      "tag": "front-6-v1.0.0",
+      "commit": "0a8b0901bd7c3235522e8091f7b4b5650461b04e",
+      "commitMessage": "HabitLoop release front-6",
+      "codeDigest": "sha256:d885a3954e95541c170c2393c0ce83768c47f04646dcc0cfe0a674f96c40b3ec",
+      "codeFiles": 75,
+      "package": {
+        "path": "tickets/front-6",
+        "files": 32,
+        "digest": "sha256:5d793324260130631bd8ba616d7d5e40ad73ff641b2d337068bd019c214f7802"
+      },
+      "type": "fix",
+      "skills": {
+        "en": [
+          "Effects and lifecycle",
+          "Async and state"
+        ],
+        "pt": [
+          "Efeitos e ciclo de vida",
+          "Assincronia e estado"
+        ]
+      }
+    },
+    {
+      "id": "front-7",
+      "track": "front",
+      "order": 7,
+      "branch": "front-7",
+      "tag": "front-7-v1.0.0",
+      "commit": "6388f97619fbff785083efd10e4a7fb77110cce1",
+      "commitMessage": "HabitLoop release front-7",
+      "codeDigest": "sha256:2673d6085c2c6fe25879018fb97234d4ee7b3ccb7fb6fbedbe9913fe36ecf966",
+      "codeFiles": 75,
+      "package": {
+        "path": "tickets/front-7",
+        "files": 32,
+        "digest": "sha256:6eb4661cd2791abcef0c7da055870a06672d98302a9e0f823d27d9c639fd01f3"
+      },
+      "type": "fix",
+      "skills": {
+        "en": [
+          "Async and state"
+        ],
+        "pt": [
+          "Assincronia e estado"
+        ]
+      }
+    },
+    {
+      "id": "front-8",
+      "track": "front",
+      "order": 8,
+      "branch": "front-8",
+      "tag": "front-8-v1.0.0",
+      "commit": "965ff5b2e50fde3355f910bfe2a12f850270c289",
+      "commitMessage": "HabitLoop release front-8",
+      "codeDigest": "sha256:1aa114b13fc15f43b2cb5171898cea4ffcc7a877311b6e587579869caa980d0d",
+      "codeFiles": 74,
+      "package": {
+        "path": "tickets/front-8",
+        "files": 32,
+        "digest": "sha256:d6827b88b52aa2584a9632dfc2c9355b8b35a4d3294e2d89316fe760e69e5e17"
+      },
+      "type": "build",
+      "skills": {
+        "en": [
+          "Building components"
+        ],
+        "pt": [
+          "Criação de componentes"
+        ]
+      }
+    },
+    {
+      "id": "back-1",
+      "track": "back",
+      "order": 1,
+      "branch": "back-1",
+      "tag": "back-1-v1.0.0",
+      "commit": "0505db05704f2d46de54c08fa08106c11d55b042",
+      "commitMessage": "HabitLoop release back-1",
+      "codeDigest": "sha256:41d5a6488df3927b1bb03f8c75090becf192140e1ccee58898b2befc8b66da54",
+      "codeFiles": 75,
+      "package": {
+        "path": "tickets/back-1",
+        "files": 32,
+        "digest": "sha256:94aa1ec41546e63376867c5b73547f90452013367e62c4763b00d324f41c035d"
+      },
+      "type": "fix",
+      "skills": {
+        "en": [
+          "Language and types"
+        ],
+        "pt": [
+          "Linguagem e tipos"
+        ]
+      }
+    },
+    {
+      "id": "back-2",
+      "track": "back",
+      "order": 2,
+      "branch": "back-2",
+      "tag": "back-2-v1.0.0",
+      "commit": "3350cb4d522d7eb35b2d2a7455f9e4da7e0883e7",
+      "commitMessage": "HabitLoop release back-2",
+      "codeDigest": "sha256:91a9ea32ec523e7582a4ad691c23f28c729a61e6efab247cc0a635fffe6237ed",
+      "codeFiles": 75,
+      "package": {
+        "path": "tickets/back-2",
+        "files": 32,
+        "digest": "sha256:8f12eb2d578ccb8a39b0a478ddc0e337e8d4e4f33582dd2d797e484bb714af7d"
+      },
+      "type": "fix",
+      "skills": {
+        "en": [
+          "Errors and resilience"
+        ],
+        "pt": [
+          "Erros e resiliência"
+        ]
+      }
+    },
+    {
+      "id": "back-3",
+      "track": "back",
+      "order": 3,
+      "branch": "back-3",
+      "tag": "back-3-v1.0.0",
+      "commit": "f8c305df11c4555e4035bb2ca45c997a37c01c84",
+      "commitMessage": "HabitLoop release back-3",
+      "codeDigest": "sha256:e33941f0d624eb5a35aeb30fa3fdca50bb19498be88d8bbf685b4cec45985888",
+      "codeFiles": 75,
+      "package": {
+        "path": "tickets/back-3",
+        "files": 32,
+        "digest": "sha256:81b24e7403493187cbd59d5fc53ef4644e479bc4cb31d16fffe233de8f3a6388"
+      },
+      "type": "fix",
+      "skills": {
+        "en": [
+          "Configuration and feature flags"
+        ],
+        "pt": [
+          "Configuração e opções de funcionalidade"
+        ]
+      }
+    },
+    {
+      "id": "back-4",
+      "track": "back",
+      "order": 4,
+      "branch": "back-4",
+      "tag": "back-4-v1.0.0",
+      "commit": "07f8e7a2a958d1ae552267a36ca4996124ed7f6d",
+      "commitMessage": "HabitLoop release back-4",
+      "codeDigest": "sha256:0a7c7847a66566cbfc6185b8ca1e7d80924d56b7e4ac0ed607e80b089df91ca7",
+      "codeFiles": 75,
+      "package": {
+        "path": "tickets/back-4",
+        "files": 32,
+        "digest": "sha256:5b2b879684728f4d4cb4fd0eb15ddac4629318e3aa33dd28d8cf50a9f80cc139"
+      },
+      "type": "fix",
+      "skills": {
+        "en": [
+          "Databases and queries"
+        ],
+        "pt": [
+          "Banco de dados e consultas"
+        ]
+      }
+    },
+    {
+      "id": "back-5",
+      "track": "back",
+      "order": 5,
+      "branch": "back-5",
+      "tag": "back-5-v1.0.0",
+      "commit": "aad659951b76825be92e9889af2c451c49963bcf",
+      "commitMessage": "HabitLoop release back-5",
+      "codeDigest": "sha256:cca9ecf7f03a6f2a9a555ba6ec88eb8ecdb55c9bd453986176c66d0072d057e1",
+      "codeFiles": 75,
+      "package": {
+        "path": "tickets/back-5",
+        "files": 32,
+        "digest": "sha256:76c669b98167dd1fbef6193991da91d790a3af2e4e5abcc9c878051b62957cfb"
+      },
+      "type": "build",
+      "skills": {
+        "en": [
+          "Routes and endpoints"
+        ],
+        "pt": [
+          "Criação de rotas e endpoints"
+        ]
+      }
+    }
+  ]
+}
