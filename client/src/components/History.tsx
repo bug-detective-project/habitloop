@@ -315,16 +315,35 @@ function PeriodSummary({ history, period, today }: { history: HistoryData; perio
               <th scope="row" title={habit.name}>
                 {habit.name}
               </th>
-              <td data-label="Started">{shortDay(habit.startedOn)}</td>
-              <td data-label="Done">
+              <td>{shortDay(habit.startedOn)}</td>
+              <td>
                 {stats.done} of {stats.possible}
               </td>
-              <td data-label="Of the days">{stats.rate === null ? '–' : `${stats.rate}%`}</td>
-              <td data-label="Longest streak">{stats.longestStreak}</td>
+              <td>{stats.rate === null ? '–' : `${stats.rate}%`}</td>
+              <td>{stats.longestStreak}</td>
             </tr>
           ))}
         </tbody>
       </SummaryTable>
+      {/* Below 768px the table becomes one short line per habit: a bar, the numbers, the start. */}
+      <Compact aria-label="How it went">
+        {rows.map(({ habit, stats }) => (
+          <CompactItem key={habit.id} data-testid={`compact-${habit.id}`}>
+            <CompactName>{habit.name}</CompactName>
+            <CompactLine>
+              <Bar aria-hidden="true">
+                <BarFill $percent={stats.rate ?? 0} />
+              </Bar>
+              <CompactNumbers>
+                {stats.done} of {stats.possible} · {stats.rate === null ? '–' : `${stats.rate}%`}
+              </CompactNumbers>
+            </CompactLine>
+            <CompactNote>
+              Since {shortDay(habit.startedOn)} · Best streak {stats.longestStreak}
+            </CompactNote>
+          </CompactItem>
+        ))}
+      </Compact>
     </SummaryScroll>
   );
 }
@@ -608,40 +627,67 @@ const SummaryTable = styled.table`
     font-variant-numeric: tabular-nums;
   }
 
-  /* On a phone each habit is a block: its name, then the four numbers with their names. */
-  @media (max-width: 560px) {
-    thead {
-      display: none;
-    }
-
-    tbody tr {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      padding: ${({ theme }) => theme.space.sm} 0;
-    }
-
-    th[scope='row'] {
-      grid-column: 1 / -1;
-      max-width: none;
-      padding-bottom: ${({ theme }) => theme.space.xs};
-      white-space: normal;
-    }
-
-    td {
-      display: flex;
-      flex-direction: column;
-      padding-top: 0;
-      text-align: left;
-      white-space: normal;
-    }
-
-    td::before {
-      content: attr(data-label);
-      color: ${({ theme }) => theme.color.muted};
-      font-size: 0.6875rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
+  @media (max-width: 767px) {
+    display: none;
   }
+`;
+
+const Compact = styled.ul`
+  display: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @media (max-width: 767px) {
+    display: block;
+  }
+`;
+
+const CompactItem = styled.li`
+  padding: ${({ theme }) => theme.space.sm} 0;
+  border-top: 1px solid ${({ theme }) => theme.color.border};
+
+  &:first-child {
+    border-top: 0;
+  }
+`;
+
+const CompactName = styled.p`
+  margin: 0 0 ${({ theme }) => theme.space.xs};
+  font-weight: 600;
+  overflow-wrap: anywhere;
+`;
+
+const CompactLine = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.space.sm};
+`;
+
+const Bar = styled.div`
+  flex: 1;
+  height: 8px;
+  overflow: hidden;
+  border-radius: ${({ theme }) => theme.radius.round};
+  background: ${({ theme }) => theme.color.sunken};
+`;
+
+const BarFill = styled.div<{ $percent: number }>`
+  width: ${({ $percent }) => $percent}%;
+  height: 100%;
+  border-radius: inherit;
+  background: ${({ theme }) => theme.color.accent};
+`;
+
+const CompactNumbers = styled.span`
+  flex-shrink: 0;
+  font-size: ${({ theme }) => theme.font.small};
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+`;
+
+const CompactNote = styled.p`
+  margin: ${({ theme }) => theme.space.xs} 0 0;
+  color: ${({ theme }) => theme.color.muted};
+  font-size: 0.8125rem;
 `;

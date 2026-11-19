@@ -49,6 +49,14 @@ const Table = styled.table`
     font-variant-numeric: tabular-nums;
   }
 
+  /* Below 768px the Done column gives its room to the days; the summary under the table has it. */
+  @media (max-width: 767px) {
+    thead th:last-child,
+    td[data-testid='progress'] {
+      display: none;
+    }
+  }
+
   /* On a phone the name wraps to two lines in a narrow column, so the days fit beside it. */
   @media (max-width: 560px) {
     th,
