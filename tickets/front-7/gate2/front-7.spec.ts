@@ -15,7 +15,8 @@ async function holdNextSummary(page: Page): Promise<{ asked: Promise<void>; rele
   const gate = new Promise<void>((resolve) => (open = resolve));
   const delivered = new Promise<void>((resolve) => (markDelivered = resolve));
 
-  await page.route('**/api/summary', async (route) => {
+  // The week asks for /api/summary?end=…: the pattern takes the query too.
+  await page.route('**/api/summary*', async (route) => {
     if (!armed) {
       await route.continue();
       return;

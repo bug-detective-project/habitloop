@@ -1,9 +1,9 @@
 diff --git a/client/src/components/WeekPanel.polling.test.tsx b/client/src/components/WeekPanel.polling.test.tsx
 new file mode 100644
-index 0000000..8da9671
+index 0000000..f46dff7
 --- /dev/null
 +++ b/client/src/components/WeekPanel.polling.test.tsx
-@@ -0,0 +1,49 @@
+@@ -0,0 +1,48 @@
 +import { screen } from '@testing-library/react';
 +import userEvent from '@testing-library/user-event';
 +import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -14,7 +14,7 @@ index 0000000..8da9671
 +  return requestsOf(api).filter((request) => request.path === '/api/summary').length;
 +}
 +
-+describe('the refresh of the last 7 days', () => {
++describe('the refresh of the week', () => {
 +  beforeEach(() => {
 +    vi.useFakeTimers({ shouldAdvanceTime: true });
 +  });
@@ -23,13 +23,13 @@ index 0000000..8da9671
 +    vi.useRealTimers();
 +  });
 +
-+  it('asks the server again every 10 seconds while the panel is open', async () => {
++  it('asks the server again every 10 seconds while the week is on the screen', async () => {
 +    const api = mockApi();
 +    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
 +    await renderApp();
 +
-+    await user.click(screen.getByRole('button', { name: 'Last 7 days' }));
-+    await screen.findByRole('table');
++    await user.click(screen.getByRole('button', { name: 'History' }));
++    await screen.findByTestId('week-table');
 +    const opened = summaryRequests(api);
 +
 +    await vi.advanceTimersByTimeAsync(30_000);
@@ -37,15 +37,14 @@ index 0000000..8da9671
 +    expect(summaryRequests(api)).toBeGreaterThanOrEqual(opened + 3);
 +  });
 +
-+  it('stops asking once the panel is closed', async () => {
++  it('stops asking once the week leaves the screen', async () => {
 +    const api = mockApi();
 +    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
 +    await renderApp();
 +
-+    const toggle = screen.getByRole('button', { name: 'Last 7 days' });
-+    await user.click(toggle);
-+    await screen.findByRole('table');
-+    await user.click(toggle);
++    await user.click(screen.getByRole('button', { name: 'History' }));
++    await screen.findByTestId('week-table');
++    await user.click(screen.getByRole('button', { name: 'Today' }));
 +    const closed = summaryRequests(api);
 +
 +    await vi.advanceTimersByTimeAsync(60_000);
@@ -54,10 +53,10 @@ index 0000000..8da9671
 +  });
 +});
 diff --git a/client/src/components/WeekPanel.tsx b/client/src/components/WeekPanel.tsx
-index 45e7290..1020900 100644
+index 8ddc1e7..47e4086 100644
 --- a/client/src/components/WeekPanel.tsx
 +++ b/client/src/components/WeekPanel.tsx
-@@ -87,7 +87,8 @@ export function WeekPanel() {
+@@ -184,7 +184,8 @@ export function WeekPanel({ end, habitId }: { end: string; habitId?: number }) {
  
    useEffect(() => {
      void load();

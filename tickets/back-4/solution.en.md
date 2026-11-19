@@ -17,4 +17,4 @@
    ```
 3. **Add a regression test.** The reference adds `server/src/summary-days.test.ts`: the habit of the sample that was marked twice, and a habit marked again today.
 
-Then run `npm test`, look at the panel in the browser, and move the card to **In QA**.
+Then run `npm test`, look at the week of the history in the browser, and move the card to **In QA**.

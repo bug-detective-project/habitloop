@@ -1,6 +1,6 @@
 {
   "hints": [
-    "O painel sai da página quando é fechado, e as requisições continuam saindo. Então algo que o painel iniciou continua rodando sem ele. O que em `client/src/components/WeekPanel.tsx` roda de novo e de novo sozinho?",
+    "A semana sai da página quando deixa a tela, e as requisições continuam saindo. Então algo que a semana iniciou continua rodando sem ela. O que em `client/src/components/WeekPanel.tsx` roda de novo e de novo sozinho?",
     "A atualização é um `setInterval` criado dentro de um `useEffect`. Um intervalo não pertence ao componente: o navegador continua chamando até alguém cancelar, esteja o componente na página ou não.",
     "Um efeito pode devolver uma função, e o React a chama quando o componente sai da página (e antes de o efeito rodar de novo). É o lugar de desfazer o que o efeito iniciou: guarde o que o `setInterval` devolve e passe para o `clearInterval`."
   ]

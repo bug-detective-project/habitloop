@@ -19,6 +19,6 @@
      return streak;
    }
    ```
-3. **Add regression tests.** The reference adds `client/src/streak.order.test.ts` (days in any order, a day repeated) and `client/src/components/WeekPanel.streak.test.tsx` (marking yesterday in the panel).
+3. **Add regression tests.** The reference adds `client/src/streak.order.test.ts` (days in any order, a day repeated) and `client/src/components/WeekPanel.streak.test.tsx` (marking yesterday in the week of the history).
 
-Then run `npm test`, fill a gap in **Last 7 days** in the browser, and move the card to **In QA**.
+Then run `npm test`, fill a gap in the week of **History** in the browser, and move the card to **In QA**.

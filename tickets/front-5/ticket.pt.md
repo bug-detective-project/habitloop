@@ -16,14 +16,14 @@
 
 ## Descrição
 
-Quem esquece de marcar um hábito pode preencher o dia depois, em **Last 7 days**. Quando faz isso, a sequência no cartão vira "No streak yet" em vez de crescer. Depois de recarregar, a sequência fica certa.
+Quem esquece de marcar um hábito pode preencher o dia depois, na semana do **History**. Quando faz isso, a sequência no cartão vira "No streak yet" em vez de crescer. Depois de recarregar, a sequência fica certa.
 
-Exemplo da minha conta: "Read 10 pages" foi feito nos dias 14, 15, 16 e hoje, dia 18. O cartão diz "1 day in a row". Marco o dia 17 no painel e espero 5 dias. O cartão diz "No streak yet".
+Exemplo da minha conta: "Read 10 pages" foi feito nos dias 14, 15, 16 e hoje, dia 18. O cartão diz "1 day in a row". Marco o dia 17 na semana do histórico, volto para **Today** e espero 5 dias. O cartão diz "No streak yet".
 
 ## Passos para reproduzir
 
 1. Abra o HabitLoop e ache um hábito feito hoje e não feito ontem.
-2. Abra **Last 7 days** e marque o dia de ontem para esse hábito.
+2. Abra o **History** (a aba **Week**), marque o dia de ontem para esse hábito e volte para **Today**.
 3. Olhe a sequência no cartão do hábito.
 
 ## Resultado esperado

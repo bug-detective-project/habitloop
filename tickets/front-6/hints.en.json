@@ -1,6 +1,6 @@
 {
   "hints": [
-    "The panel is taken off the page when it is closed, and the requests still go out. So something that the panel started keeps running without it. What in `client/src/components/WeekPanel.tsx` runs again and again on its own?",
+    "The week is taken off the page when it leaves the screen, and the requests still go out. So something that the week started keeps running without it. What in `client/src/components/WeekPanel.tsx` runs again and again on its own?",
     "The refresh is a `setInterval` created inside a `useEffect`. An interval does not belong to the component: the browser keeps calling it until someone cancels it, whether the component is on the page or not.",
     "An effect can return a function, and React calls it when the component leaves the page (and before the effect runs again). That is the place to undo what the effect started: keep what `setInterval` returns and pass it to `clearInterval`."
   ]

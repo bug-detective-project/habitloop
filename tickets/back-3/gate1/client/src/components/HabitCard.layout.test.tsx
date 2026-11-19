@@ -7,7 +7,7 @@ const LONG_NAME = 'Write three things I am grateful for in the paper journal bef
 
 describe('a habit with a long name', () => {
   it('lets the block of the name shrink, so the name is cut instead of pushing the buttons out', async () => {
-    mockApi({ habits: [{ id: 6, name: LONG_NAME, weeklyGoal: 7, days: [] }] });
+    mockApi({ habits: [{ id: 6, name: LONG_NAME, weeklyGoal: 7, startedOn: '2026-03-01', days: [] }] });
     await renderApp();
 
     const name = screen.getByRole('heading', { level: 3, name: LONG_NAME });

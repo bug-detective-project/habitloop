@@ -1,7 +1,7 @@
 {
   "hints": [
     "Recarregar resolve, então o servidor tem os dias certos. Compare a lista de dias do hábito antes e depois de marcar ontem, sem recarregar: o React DevTools mostra `days` nas props do cartão. Olhe a ordem.",
-    "Depois que você marca um dia no painel, o app o acrescenta ao fim da lista de dias. O servidor manda os dias do mais antigo ao mais novo; o app não põe o dia novo no lugar. Agora leia `currentStreak` em `client/src/streak.ts`: o que ela supõe sobre a lista?",
+    "Depois que você marca um dia na semana do histórico, o app o acrescenta ao fim da lista de dias. O servidor manda os dias do mais antigo ao mais novo; o app não põe o dia novo no lugar. Agora leia `currentStreak` em `client/src/streak.ts`: o que ela supõe sobre a lista?",
     "A `currentStreak` percorre a lista do último item para trás e espera que cada um seja o dia anterior ao de antes. Com ontem acrescentado depois de hoje, o último item não é hoje e a conta para em zero. Uma sequência depende de quais dias estão marcados, não da ordem em que chegam: um `Set` responde \"este dia está marcado?\" sem se importar com a ordem."
   ]
 }

@@ -17,4 +17,4 @@
    ```
 3. **Adicione um teste de regressão.** A referência adiciona `server/src/summary-days.test.ts`: o hábito do exemplo que foi marcado duas vezes, e um hábito marcado de novo hoje.
 
-Depois rode `npm test`, olhe o painel no navegador e mova o card para **Em QA**.
+Depois rode `npm test`, olhe a semana do histórico no navegador e mova o card para **Em QA**.

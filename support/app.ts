@@ -78,12 +78,18 @@ export function checkOf(page: Page, habit: { id: number; name: string }): Locato
   return cardOf(page, habit.id).getByRole('button', { name: `${habit.name}: done today` });
 }
 
-/** Opens the panel of the last 7 days and waits for its table. */
+/** Opens the history, whose Week tab shows the seven days that end today, and waits for its table. */
 export async function openWeek(page: Page): Promise<Locator> {
-  await page.getByRole('button', { name: 'Last 7 days' }).click();
-  const panel = page.getByRole('complementary', { name: 'Last 7 days' });
-  await expect(panel.getByRole('table')).toBeVisible();
-  return panel;
+  await page.getByRole('button', { name: 'History', exact: true }).click();
+  const week = page.getByTestId('week-table');
+  await expect(week.getByRole('table')).toBeVisible();
+  return week;
+}
+
+/** Goes back to the Today screen, where the cards are; the history (and its week) leaves the screen. */
+export async function openToday(page: Page): Promise<void> {
+  await page.getByRole('button', { name: 'Today', exact: true }).click();
+  await expect(page.getByTestId('week-table')).toHaveCount(0);
 }
 
 export interface Box {

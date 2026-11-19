@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import type { Habit, Summary } from '../api/habits.ts';
+import type { Habit, History, Summary } from '../api/habits.ts';
 import { getWeek } from '../dates.ts';
 
 /** The day every client test calls today: a Wednesday. */
@@ -7,10 +7,16 @@ export const TODAY = '2026-03-18';
 
 export function createTestHabits(): Habit[] {
   return [
-    { id: 1, name: 'Drink water', weeklyGoal: 7, days: ['2026-03-15', '2026-03-16', '2026-03-17', '2026-03-18'] },
-    { id: 2, name: 'Read 10 pages', weeklyGoal: 5, days: ['2026-03-14', '2026-03-15', '2026-03-16'] },
-    { id: 3, name: 'Morning walk', weeklyGoal: 3, days: ['2026-03-16', '2026-03-17'] },
-    { id: 4, name: 'Stretch', weeklyGoal: null, days: ['2026-03-10'] },
+    {
+      id: 1,
+      name: 'Drink water',
+      weeklyGoal: 7,
+      startedOn: '2026-02-02',
+      days: ['2026-02-27', '2026-02-28', '2026-03-01', '2026-03-15', '2026-03-16', '2026-03-17', '2026-03-18'],
+    },
+    { id: 2, name: 'Read 10 pages', weeklyGoal: 5, startedOn: '2026-02-20', days: ['2026-03-14', '2026-03-15', '2026-03-16'] },
+    { id: 3, name: 'Morning walk', weeklyGoal: 3, startedOn: '2026-03-16', days: ['2026-03-16', '2026-03-17'] },
+    { id: 4, name: 'Stretch', weeklyGoal: null, startedOn: '2026-03-01', days: ['2026-03-01', '2026-03-10'] },
   ];
 }
 
@@ -31,8 +37,8 @@ export function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
 }
 
-export function summaryOf(habits: Habit[]): Summary {
-  const days = getWeek(TODAY);
+export function summaryOf(habits: Habit[], end = TODAY): Summary {
+  const days = getWeek(end);
   return {
     days,
     habits: habits.map((habit) => {
@@ -60,7 +66,7 @@ export function mockApi(options: MockApiOptions = {}) {
   let habits = options.habits ?? createTestHabits();
   let nextId = Math.max(0, ...habits.map((habit) => habit.id)) + 1;
 
-  function handle(request: MockRequest): Response {
+  function handle(request: MockRequest, search: URLSearchParams): Response {
     const { method, path } = request;
     const body = (request.body ?? {}) as Record<string, unknown>;
     const match = path.match(/^\/api\/habits\/(\d+)(\/archive|\/checkins(?:\/([\d-]+))?)?$/);
@@ -73,10 +79,32 @@ export function mockApi(options: MockApiOptions = {}) {
       return json(habits);
     }
     if (method === 'GET' && path === '/api/summary') {
-      return json(summaryOf(habits));
+      return json(summaryOf(habits, search.get('end') ?? TODAY));
+    }
+    if (method === 'GET' && path === '/api/history') {
+      const from = search.get('from') ?? TODAY;
+      const to = search.get('to') ?? TODAY;
+      const only = search.get('habit');
+      const history: History = {
+        from,
+        to,
+        habits: habits
+          .filter((item) => only === null || item.id === Number(only))
+          .map(({ id, name, weeklyGoal, startedOn, days }) => ({
+            id,
+            name,
+            weeklyGoal,
+            startedOn,
+            days: days.filter((day) => day >= from && day <= to).sort(),
+          })),
+      };
+      return json(history);
     }
     if (method === 'POST' && path === '/api/habits') {
-      habits = [...habits, { id: nextId++, name: String(body.name), weeklyGoal: (body.weeklyGoal as number | null) ?? null, days: [] }];
+      habits = [
+        ...habits,
+        { id: nextId++, name: String(body.name), weeklyGoal: (body.weeklyGoal as number | null) ?? null, startedOn: TODAY, days: [] },
+      ];
       return json(habits, 201);
     }
     if (match && !habit) {
@@ -110,7 +138,7 @@ export function mockApi(options: MockApiOptions = {}) {
       path: url.pathname,
       body: typeof init?.body === 'string' ? JSON.parse(init.body) : undefined,
     };
-    return (await options.respond?.(request)) ?? handle(request);
+    return (await options.respond?.(request)) ?? handle(request, url.searchParams);
   });
 
   vi.stubGlobal('fetch', fetchMock);

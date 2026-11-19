@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { cardOf, HABITS, openApp, openWeek, setDay, TODAY, YESTERDAY } from '../../../support/app.ts';
+import { cardOf, HABITS, openApp, openToday, openWeek, setDay, TODAY, YESTERDAY } from '../../../support/app.ts';
 
 test.describe('Ticket front-5: marking an earlier day keeps the streak right', () => {
   test.beforeEach(async ({ request }) => {
@@ -16,16 +16,18 @@ test.describe('Ticket front-5: marking an earlier day keeps the streak right', (
     const streak = cardOf(page, HABITS.read.id).getByTestId('streak');
     await expect(streak).toHaveText('1 day in a row');
 
-    const panel = await openWeek(page);
-    await panel.getByRole('button', { name: `${HABITS.read.name}, Tuesday, March 17` }).click();
+    const week = await openWeek(page);
+    await week.getByRole('button', { name: `${HABITS.read.name}, Tuesday, March 17` }).click();
+    await openToday(page);
 
     await expect(streak).toHaveText('5 days in a row');
   });
 
   test('the streak on the screen is the same after a reload', async ({ page }) => {
     await openApp(page);
-    const panel = await openWeek(page);
-    await panel.getByRole('button', { name: `${HABITS.read.name}, Tuesday, March 17` }).click();
+    const week = await openWeek(page);
+    await week.getByRole('button', { name: `${HABITS.read.name}, Tuesday, March 17` }).click();
+    await openToday(page);
     await expect(cardOf(page, HABITS.read.id).getByTestId('streak')).toHaveText('5 days in a row');
 
     await page.reload();
@@ -38,8 +40,9 @@ test.describe('Ticket front-5: marking an earlier day keeps the streak right', (
     const streak = cardOf(page, HABITS.walk.id).getByTestId('streak');
     await expect(streak).toHaveText('2 days in a row');
 
-    const panel = await openWeek(page);
-    await panel.getByRole('button', { name: `${HABITS.walk.name}, Sunday, March 15` }).click();
+    const week = await openWeek(page);
+    await week.getByRole('button', { name: `${HABITS.walk.name}, Sunday, March 15` }).click();
+    await openToday(page);
 
     await expect(streak).toHaveText('3 days in a row');
   });
@@ -49,11 +52,12 @@ test.describe('Ticket front-5: marking an earlier day keeps the streak right', (
     const streak = cardOf(page, HABITS.water.id).getByTestId('streak');
     await expect(streak).toHaveText('10 days in a row');
 
-    const panel = await openWeek(page);
-    await panel.getByRole('button', { name: `${HABITS.water.name}, Monday, March 16` }).click();
+    await (await openWeek(page)).getByRole('button', { name: `${HABITS.water.name}, Monday, March 16` }).click();
+    await openToday(page);
     await expect(streak).toHaveText('2 days in a row');
 
-    await panel.getByRole('button', { name: `${HABITS.water.name}, Monday, March 16` }).click();
+    await (await openWeek(page)).getByRole('button', { name: `${HABITS.water.name}, Monday, March 16` }).click();
+    await openToday(page);
     await expect(streak).toHaveText('10 days in a row');
   });
 });

@@ -15,4 +15,4 @@
    ```
 3. **Add a regression test.** The reference adds `server/src/summary-no-goal.test.ts`: a habit without a goal, a new one with no days, and habits with a goal.
 
-Then run `npm test`, look at the panel in the browser, and move the card to **In QA**.
+Then run `npm test`, look at the week of the history in the browser, and move the card to **In QA**.

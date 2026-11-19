@@ -19,6 +19,6 @@
      return streak;
    }
    ```
-3. **Adicione testes de regressão.** A referência adiciona `client/src/streak.order.test.ts` (dias em qualquer ordem, um dia repetido) e `client/src/components/WeekPanel.streak.test.tsx` (marcar ontem no painel).
+3. **Adicione testes de regressão.** A referência adiciona `client/src/streak.order.test.ts` (dias em qualquer ordem, um dia repetido) e `client/src/components/WeekPanel.streak.test.tsx` (marcar ontem na semana do histórico).
 
-Depois rode `npm test`, preencha um buraco em **Last 7 days** no navegador e mova o card para **Em QA**.
+Depois rode `npm test`, preencha um buraco na semana do **History** no navegador e mova o card para **Em QA**.

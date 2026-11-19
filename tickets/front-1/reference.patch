@@ -1,6 +1,6 @@
 diff --git a/client/src/components/HabitCard.layout.test.tsx b/client/src/components/HabitCard.layout.test.tsx
 new file mode 100644
-index 0000000..c5c47f1
+index 0000000..54b167b
 --- /dev/null
 +++ b/client/src/components/HabitCard.layout.test.tsx
 @@ -0,0 +1,22 @@
@@ -13,7 +13,7 @@ index 0000000..c5c47f1
 +
 +describe('a habit with a long name', () => {
 +  it('lets the block of the name shrink, so the name is cut instead of pushing the buttons out', async () => {
-+    mockApi({ habits: [{ id: 6, name: LONG_NAME, weeklyGoal: 7, days: [] }] });
++    mockApi({ habits: [{ id: 6, name: LONG_NAME, weeklyGoal: 7, startedOn: '2026-03-01', days: [] }] });
 +    await renderApp();
 +
 +    const name = screen.getByRole('heading', { level: 3, name: LONG_NAME });
@@ -27,14 +27,14 @@ index 0000000..c5c47f1
 +  });
 +});
 diff --git a/client/src/components/HabitCard.tsx b/client/src/components/HabitCard.tsx
-index 054895b..ce5adcc 100644
+index 1cbe443..0b69b6e 100644
 --- a/client/src/components/HabitCard.tsx
 +++ b/client/src/components/HabitCard.tsx
-@@ -37,6 +37,7 @@ const Check = styled.button<{ $done: boolean }>`
+@@ -66,6 +66,7 @@ const Check = styled.button<{ $done: boolean }>`
  
  const Info = styled.div`
    flex: 1;
 +  min-width: 0;
- `;
  
- const Name = styled.h3`
+   @media (max-width: 560px) {
+     grid-area: 1 / 2;

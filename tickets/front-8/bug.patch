@@ -1,8 +1,8 @@
 diff --git a/client/src/components/HabitCard.tsx b/client/src/components/HabitCard.tsx
-index ce5adcc..b55fb06 100644
+index 0b69b6e..bda971c 100644
 --- a/client/src/components/HabitCard.tsx
 +++ b/client/src/components/HabitCard.tsx
-@@ -5,7 +5,6 @@ import { useHabits } from '../useHabits.ts';
+@@ -6,7 +6,6 @@ import { shortDay } from '../dates.ts';
  import { currentStreak, doneThisWeek } from '../streak.ts';
  import { Button } from './buttons.ts';
  import { HabitForm } from './HabitForm.tsx';
@@ -10,8 +10,8 @@ index ce5adcc..b55fb06 100644
  
  const Card = styled.li<{ $done: boolean }>`
    display: flex;
-@@ -104,9 +103,6 @@ export function HabitCard({ habit }: { habit: Habit }) {
-           {habit.weeklyGoal === null ? `${week} this week` : `${week} of ${habit.weeklyGoal} this week`}
+@@ -177,9 +176,6 @@ export function HabitCard({ habit }: { habit: Habit }) {
+           <span data-testid="started">Since {shortDay(habit.startedOn)}</span>
          </Meta>
        </Info>
 -      {habit.weeklyGoal !== null && (
@@ -22,13 +22,13 @@ index ce5adcc..b55fb06 100644
          aria-label={`Edit ${habit.name}`}
 diff --git a/client/src/components/ProgressRing.tsx b/client/src/components/ProgressRing.tsx
 deleted file mode 100644
-index 43fbc0b..0000000
+index 924c7b6..0000000
 --- a/client/src/components/ProgressRing.tsx
 +++ /dev/null
-@@ -1,67 +0,0 @@
+@@ -1,68 +0,0 @@
 -import styled from 'styled-components';
 -
--const SIZE = 44;
+-const SIZE = 48;
 -const STROKE = 5;
 -const RADIUS = (SIZE - STROKE) / 2;
 -const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
@@ -60,7 +60,8 @@ index 43fbc0b..0000000
 -  display: grid;
 -  place-items: center;
 -  font-size: 0.7rem;
--  font-weight: 600;
+-  font-weight: 700;
+-  font-variant-numeric: tabular-nums;
 -`;
 -
 -interface ProgressRingProps {

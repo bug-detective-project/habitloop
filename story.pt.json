@@ -45,7 +45,7 @@
     "assignments": {
       "back-1": {
         "subject": "Novo ticket: HL-201",
-        "body": "O Samuel recebeu uma captura de tela de um aluno perguntando o que é um \"null day\": hábitos sem meta semanal mostram \"1 of null days\" em **Last 7 days**.\n\nÉ do lado do servidor, e o `curl` é o caminho mais rápido: veja o que `GET /api/summary` responde antes de abrir o navegador.\n\nRafaela"
+        "body": "O Samuel recebeu uma captura de tela de um aluno perguntando o que é um \"null day\": hábitos sem meta semanal mostram \"1 of null days\" na semana do **History**.\n\nÉ do lado do servidor, e o `curl` é o caminho mais rápido: veja o que `GET /api/summary` responde antes de abrir o navegador.\n\nRafaela"
       },
       "back-2": {
         "subject": "Novo ticket: HL-202",
@@ -81,19 +81,23 @@
       },
       "front-5": {
         "subject": "Novo ticket: HL-105",
-        "body": "A Nora conta que preencher o dia de ontem em **Last 7 days** faz a sequência do hábito sumir, e recarregar a traz de volta com o número certo.\n\nO servidor está certo, então este mora no navegador. Ache a função que conta a sequência e pergunte o que ela espera da entrada.\n\nRafaela"
+        "body": "A Nora conta que preencher o dia de ontem na semana do **History** faz a sequência do hábito sumir, e recarregar a traz de volta com o número certo.\n\nO servidor está certo, então este mora no navegador. Ache a função que conta a sequência e pergunte o que ela espera da entrada.\n\nRafaela"
       },
       "front-6": {
         "subject": "Novo ticket: HL-106",
-        "body": "O Samuel estava olhando a conta da hospedagem e achou a causa sozinho: o painel **Last 7 days** continua consultando o servidor a cada 10 segundos depois de fechado, e cada vez que é aberto acrescenta mais uma consulta.\n\nDeixe a aba Network aberta neste. A pergunta é quem continua rodando depois que o painel some.\n\nRafaela"
+        "body": "O Samuel estava olhando a conta da hospedagem e achou a causa sozinho: a semana do **History** continua consultando o servidor a cada 10 segundos depois de sair da tela, e cada vez que é aberta acrescenta mais uma consulta.\n\nDeixe a aba Network aberta neste. A pergunta é quem continua rodando depois que a semana some.\n\nRafaela"
       },
       "front-7": {
         "subject": "Novo ticket: HL-107",
-        "body": "A Bianca tem um que só aparece de vez em quando: um dia que ela marca em **Last 7 days** esvazia de novo um segundo depois, e volta sozinho depois de um tempo. Conexões lentas deixam isso frequente.\n\nLigue a limitação de rede no DevTools para ver sempre, e olhe qual resposta chega por último.\n\nRafaela"
+        "body": "A Bianca tem um que só aparece de vez em quando: um dia que ela marca na semana do **History** esvazia de novo um segundo depois, e volta sozinho depois de um tempo. Conexões lentas deixam isso frequente.\n\nLigue a limitação de rede no DevTools para ver sempre, e olhe qual resposta chega por último.\n\nRafaela"
       },
       "front-8": {
         "subject": "Novo ticket: HL-108",
         "body": "Desta vez é para construir. A Nora quer um anel pequeno em cada cartão de hábito, que se enche conforme a meta semanal é atingida; os números já estão no cartão, o componente não.\n\nO ticket diz exatamente o que o anel precisa expor. Comece pelo componente sozinho e pelos valores dele, e deixe o desenho por último.\n\nRafaela"
+      },
+      "front-9": {
+        "subject": "Novo ticket: HL-109",
+        "body": "O Samuel conta que a aba Month do histórico novo mostra quase nada feito em março, enquanto a semana está cheia de verde, e janeiro nem carrega.\n\nA API responde os dias certos, então olhe quais dias a tela pede.\n\nRafaela"
       }
     },
     "completion": {

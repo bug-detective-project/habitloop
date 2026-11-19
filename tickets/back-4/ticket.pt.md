@@ -16,13 +16,13 @@
 
 ## Descrição
 
-Uma aluna nos mostrou o **Last 7 days** dela: "Practice guitar" tem dois quadrados verdes, ontem e hoje, e a coluna **Done** diz "3 of 4 days". Outro aluno tem "8 of 7 days" em um hábito, numa semana de sete dias.
+Uma aluna nos mostrou a semana dela no **History**: "Practice guitar" tem dois quadrados verdes, ontem e hoje, e a coluna **Done** diz "3 of 4 days". Outro aluno tem "8 of 7 days" em um hábito, numa semana de sete dias.
 
 Acontece com quem usa o app no celular e no computador: quando os dois marcam o mesmo hábito no mesmo dia, o dia parece contar duas vezes.
 
 ## Passos para reproduzir
 
-1. Abra o HabitLoop e clique em **Last 7 days**.
+1. Abra o HabitLoop e clique em **History**: a aba **Week** abre primeiro.
 2. Conte os quadrados verdes de "Practice guitar" e compare com a coluna **Done**.
 3. Ou pergunte à API: `curl http://localhost:3001/api/summary` e compare `days` com `doneDays` nesse hábito.
 
@@ -39,7 +39,7 @@ O número de dias feitos é o número de dias marcados: 2 quadrados, "2 of 4 day
 - [ ] Um dia marcado duas vezes conta como um dia em `doneDays` e em `progress`.
 - [ ] Para todo hábito, `doneDays` é igual ao número de dias em `days`, e nunca passa de 7.
 - [ ] Marcar hoje de novo por outro aparelho não acrescenta um dia.
-- [ ] O painel **Last 7 days** mostra a contagem corrigida.
+- [ ] A semana do **History** mostra a contagem corrigida.
 
 ## Ambiente
 
