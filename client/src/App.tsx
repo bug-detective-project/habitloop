@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { Button, PrimaryButton } from './components/buttons.ts';
 import { HabitForm } from './components/HabitForm.tsx';
@@ -159,6 +159,7 @@ function Screen() {
   const { status, problem, dismissProblem } = useHabits();
   const [creating, setCreating] = useState(false);
   const [weekOpen, setWeekOpen] = useState(false);
+  const weekButtonRef = useRef<HTMLButtonElement>(null);
 
   return (
     <Page>
@@ -175,7 +176,7 @@ function Screen() {
             <Studio>Evergreen Wellness</Studio>
           </div>
         </BrandBlock>
-        <Button type="button" aria-expanded={weekOpen} onClick={() => setWeekOpen(!weekOpen)}>
+        <Button ref={weekButtonRef} type="button" aria-haspopup="dialog" onClick={() => setWeekOpen(true)}>
           Last 7 days
         </Button>
         <PrimaryButton type="button" onClick={() => setCreating(true)}>
@@ -206,7 +207,14 @@ function Screen() {
         {status === 'ready' && <Today />}
       </main>
 
-      {status === 'ready' && weekOpen && <WeekPanel />}
+      {status === 'ready' && weekOpen && (
+        <WeekPanel
+          onClose={() => {
+            setWeekOpen(false);
+            weekButtonRef.current?.focus();
+          }}
+        />
+      )}
 
       <Footer>HabitLoop is your coaching companion from Evergreen Wellness.</Footer>
     </Page>
