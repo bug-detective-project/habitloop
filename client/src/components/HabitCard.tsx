@@ -25,6 +25,18 @@ const Card = styled.li<{ $done: boolean }>`
   &:hover {
     box-shadow: ${({ theme }) => theme.shadow.lift};
   }
+
+  /* On a phone the card has two lines: the habit with its ring, and Edit under the text. */
+  @media (max-width: 560px) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: ${({ theme }) => `${theme.space.xs} 12px`};
+    padding: ${({ theme }) => theme.space.md};
+
+    > [role='progressbar'] {
+      grid-area: 1 / 3;
+    }
+  }
 `;
 
 const EditingCard = styled(Card)`
@@ -54,6 +66,10 @@ const Check = styled.button<{ $done: boolean }>`
 const Info = styled.div`
   flex: 1;
   min-width: 0;
+
+  @media (max-width: 560px) {
+    grid-area: 1 / 2;
+  }
 `;
 
 const Name = styled.h3`
@@ -63,16 +79,32 @@ const Name = styled.h3`
   font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  /* A phone is narrow: the name may take two lines before it is cut. */
+  @media (max-width: 560px) {
+    display: -webkit-box;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
 `;
 
 const Meta = styled.p`
-  margin: 2px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin: 4px 0 0;
   color: ${({ theme }) => theme.color.muted};
   font-size: ${({ theme }) => theme.font.small};
 
+  /* Each piece stays whole: when the line is short, a piece moves down instead of breaking. */
+  > span {
+    white-space: nowrap;
+  }
+
   /* The streak reads as a small tag in front of the count of the week. */
   [data-testid='streak'] {
-    display: inline-block;
     padding: 1px 9px;
     border-radius: ${({ theme }) => theme.radius.round};
     background: ${({ theme }) => theme.color.warmSoft};
@@ -86,6 +118,16 @@ const EditButton = styled(Button)`
   border-color: transparent;
   background: transparent;
   color: ${({ theme }) => theme.color.muted};
+
+  @media (max-width: 560px) {
+    grid-area: 2 / 2;
+    justify-self: start;
+    margin-left: -10px;
+    padding: 4px 10px;
+    font-size: ${({ theme }) => theme.font.small};
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
 `;
 
 function streakText(streak: number): string {
@@ -130,8 +172,7 @@ export function HabitCard({ habit }: { habit: Habit }) {
         <Name title={habit.name}>{habit.name}</Name>
         <Meta>
           <span data-testid="streak">{streakText(currentStreak(habit.days, today))}</span>
-          {' · '}
-          {habit.weeklyGoal === null ? `${week} this week` : `${week} of ${habit.weeklyGoal} this week`}
+          <span data-testid="week-count">{habit.weeklyGoal === null ? `${week} this week` : `${week} of ${habit.weeklyGoal} this week`}</span>
         </Meta>
       </Info>
       {habit.weeklyGoal !== null && (

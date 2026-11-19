@@ -27,6 +27,11 @@ const Header = styled.header`
 const BrandBlock = styled.div`
   display: flex;
   flex: 1;
+
+  /* On a phone the name takes the first line, and the two buttons the second. */
+  @media (max-width: 560px) {
+    flex-basis: 100%;
+  }
   align-items: center;
   gap: 12px;
   min-width: 0;
