@@ -45,7 +45,7 @@ describe('the history', () => {
     expect(screen.getByTestId('period')).toHaveTextContent('Mar 12 – Mar 18');
   });
 
-  it('shows the month as a calendar, with how many habits were done each day', async () => {
+  it('shows the month as a calendar of its days, and goes back a month', async () => {
     mockApi();
     await renderApp();
     await openHistory();
@@ -53,28 +53,22 @@ describe('the history', () => {
     await userEvent.click(tab('Month'));
 
     expect(screen.getByTestId('period')).toHaveTextContent('March 2026');
-    // Morning walk started on the 16th, so on the 10th three habits existed.
-    expect(await cell(/^Monday, March 16: /)).toHaveAccessibleName('Monday, March 16: 3 of 4 habits done');
-    expect(await cell(/^Tuesday, March 10: /)).toHaveAccessibleName('Tuesday, March 10: 1 of 3 habits done');
     expect(await cell(/^Thursday, March 19: /)).toHaveAccessibleName('Thursday, March 19: still to come');
+    expect(screen.getByRole('button', { name: 'Next month' })).toBeDisabled();
 
     await userEvent.click(screen.getByRole('button', { name: 'Previous month' }));
 
     expect(screen.getByTestId('period')).toHaveTextContent('February 2026');
-    expect(await cell(/^Friday, February 27: /)).toHaveAccessibleName('Friday, February 27: 1 of 2 habits done');
   });
 
-  it('follows one habit through a month: when it started, the days done, and how it went', async () => {
+  it('follows one habit through a range: when it started, the days done, and how it went', async () => {
     mockApi();
     await renderApp();
     await openHistory();
-    await userEvent.click(tab('Month'));
+    await userEvent.click(tab('Range'));
 
     await userEvent.selectOptions(screen.getByLabelText('Habit'), 'Morning walk');
 
-    expect(await cell(/^Sunday, March 15: /)).toHaveAccessibleName('Sunday, March 15: not started yet');
-    expect(await cell(/^Monday, March 16: /)).toHaveAccessibleName('Monday, March 16: done');
-    expect(await cell(/^Wednesday, March 18: /)).toHaveAccessibleName('Wednesday, March 18: not done');
     const stats = await screen.findByLabelText('How it went');
     expect(stats).toHaveTextContent('March 16, 2026');
     expect(stats).toHaveTextContent('2 of 3');

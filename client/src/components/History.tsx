@@ -32,8 +32,12 @@ function periodOf(view: View, anchor: string, range: Period): Period {
       return { from: anchor, to: anchor };
     case 'week':
       return { from: addDays(anchor, -6), to: anchor };
-    case 'month':
-      return { from: monthStart(anchor), to: monthEnd(anchor) };
+    case 'month': {
+      // The first day of the month, written out as the API wants it (YYYY-MM-DD).
+      const date = new Date(`${anchor}T00:00:00Z`);
+      const first = `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-01`;
+      return { from: first, to: monthEnd(first) };
+    }
     case 'range':
       return range;
   }
