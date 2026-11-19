@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import type { Habit } from '../api/habits.ts';
 import { useHabits } from '../useHabits.ts';
+import { shortDay } from '../dates.ts';
 import { currentStreak, doneThisWeek } from '../streak.ts';
 import { Button } from './buttons.ts';
 import { HabitForm } from './HabitForm.tsx';
@@ -173,6 +174,7 @@ export function HabitCard({ habit }: { habit: Habit }) {
         <Meta>
           <span data-testid="streak">{streakText(currentStreak(habit.days, today))}</span>
           <span data-testid="week-count">{habit.weeklyGoal === null ? `${week} this week` : `${week} of ${habit.weeklyGoal} this week`}</span>
+          <span data-testid="started">Since {shortDay(habit.startedOn)}</span>
         </Meta>
       </Info>
       {habit.weeklyGoal !== null && (

@@ -1,9 +1,9 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { Button, PrimaryButton } from './components/buttons.ts';
 import { HabitForm } from './components/HabitForm.tsx';
+import { History } from './components/History.tsx';
 import { Today } from './components/Today.tsx';
-import { WeekPanel } from './components/WeekPanel.tsx';
 import { HabitsProvider } from './HabitsContext.tsx';
 import { useHabits } from './useHabits.ts';
 import { GlobalStyle, theme } from './theme.ts';
@@ -35,6 +35,25 @@ const BrandBlock = styled.div`
   align-items: center;
   gap: 12px;
   min-width: 0;
+`;
+
+/** The two screens of the app, as a segmented control. */
+const Nav = styled.nav`
+  display: inline-flex;
+  padding: ${({ theme }) => theme.space.xs};
+  border-radius: ${({ theme }) => theme.radius.round};
+  background: ${({ theme }) => theme.color.sunken};
+`;
+
+const NavButton = styled.button<{ $current: boolean }>`
+  padding: 6px 16px;
+  border: 0;
+  border-radius: ${({ theme }) => theme.radius.round};
+  background: ${({ theme, $current }) => ($current ? theme.color.card : 'transparent')};
+  box-shadow: ${({ theme, $current }) => ($current ? theme.shadow.card : 'none')};
+  color: ${({ theme, $current }) => ($current ? theme.color.text : theme.color.muted)};
+  font-weight: 700;
+  cursor: pointer;
 `;
 
 const Mark = styled.span`
@@ -158,8 +177,7 @@ function DaySummary() {
 function Screen() {
   const { status, problem, dismissProblem } = useHabits();
   const [creating, setCreating] = useState(false);
-  const [weekOpen, setWeekOpen] = useState(false);
-  const weekButtonRef = useRef<HTMLButtonElement>(null);
+  const [screen, setScreen] = useState<'today' | 'history'>('today');
 
   return (
     <Page>
@@ -176,12 +194,19 @@ function Screen() {
             <Studio>Evergreen Wellness</Studio>
           </div>
         </BrandBlock>
-        <Button ref={weekButtonRef} type="button" aria-haspopup="dialog" onClick={() => setWeekOpen(true)}>
-          Last 7 days
-        </Button>
-        <PrimaryButton type="button" onClick={() => setCreating(true)}>
-          New habit
-        </PrimaryButton>
+        <Nav aria-label="Screens">
+          <NavButton type="button" aria-current={screen === 'today' ? 'page' : undefined} $current={screen === 'today'} onClick={() => setScreen('today')}>
+            Today
+          </NavButton>
+          <NavButton type="button" aria-current={screen === 'history' ? 'page' : undefined} $current={screen === 'history'} onClick={() => setScreen('history')}>
+            History
+          </NavButton>
+        </Nav>
+        {screen === 'today' && (
+          <PrimaryButton type="button" onClick={() => setCreating(true)}>
+            New habit
+          </PrimaryButton>
+        )}
       </Header>
 
       {problem && (
@@ -193,29 +218,19 @@ function Screen() {
         </Problem>
       )}
 
-      {creating && (
+      {screen === 'today' && creating && (
         <Box>
           <HabitForm onClose={() => setCreating(false)} />
         </Box>
       )}
 
-      {status === 'ready' && <DaySummary />}
+      {screen === 'today' && status === 'ready' && <DaySummary />}
 
       <main>
         {status === 'loading' && <p>Loading…</p>}
         {status === 'failed' && <p role="alert">HabitLoop could not load your habits. Is the API running?</p>}
-        {status === 'ready' && <Today />}
+        {status === 'ready' && (screen === 'today' ? <Today /> : <History />)}
       </main>
-
-      {status === 'ready' && weekOpen && (
-        <WeekPanel
-          onClose={() => {
-            setWeekOpen(false);
-            weekButtonRef.current?.focus();
-          }}
-        />
-      )}
-
       <Footer>HabitLoop is your coaching companion from Evergreen Wellness.</Footer>
     </Page>
   );

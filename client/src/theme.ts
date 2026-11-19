@@ -57,6 +57,16 @@ export const GlobalStyle = createGlobalStyle`
     color: inherit;
   }
 
+  /* Read by screen readers, not shown. */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
   :focus-visible {
     outline: 3px solid ${({ theme }) => theme.color.accent};
     outline-offset: 2px;

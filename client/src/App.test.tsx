@@ -59,7 +59,7 @@ describe('the Today list', () => {
 
   it('puts the day back and says why when the change is refused', async () => {
     mockApi({
-      habits: [{ id: 3, name: 'Morning walk', weeklyGoal: 3, days: ['2026-03-16', '2026-03-17'] }],
+      habits: [{ id: 3, name: 'Morning walk', weeklyGoal: 3, startedOn: '2026-03-16', days: ['2026-03-16', '2026-03-17'] }],
       respond: (request) => (request.method === 'POST' ? json({ error: 'The database is locked' }, 500) : undefined),
     });
     await renderApp();
@@ -141,78 +141,5 @@ describe('creating and changing habits', () => {
 
     expect(screen.queryByRole('form')).not.toBeInTheDocument();
     expect(requestsOf(api).some((request) => request.method === 'PATCH')).toBe(false);
-  });
-});
-
-describe('the last 7 days', () => {
-  it('opens with the days and the progress of each habit', async () => {
-    mockApi();
-    await renderApp();
-
-    await userEvent.click(screen.getByRole('button', { name: 'Last 7 days' }));
-    const panel = await screen.findByRole('dialog', { name: 'Last 7 days' });
-
-    const row = await within(panel).findByTestId('week-2');
-    expect(within(row).getByTestId('progress')).toHaveTextContent('3 of 5 days');
-    expect(within(row).getByRole('button', { name: 'Read 10 pages, Monday, March 16' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    );
-    expect(within(row).getByRole('button', { name: 'Read 10 pages, Tuesday, March 17' })).toHaveAttribute(
-      'aria-pressed',
-      'false',
-    );
-  });
-
-  it('marks an earlier day', async () => {
-    const api = mockApi();
-    await renderApp();
-
-    await userEvent.click(screen.getByRole('button', { name: 'Last 7 days' }));
-    const panel = await screen.findByRole('dialog', { name: 'Last 7 days' });
-    const day = await within(panel).findByRole('button', { name: 'Stretch, Tuesday, March 17' });
-    await userEvent.click(day);
-
-    await waitFor(() => {
-      expect(day).toHaveAttribute('aria-pressed', 'true');
-    });
-    expect(requestsOf(api)).toContainEqual({
-      method: 'POST',
-      path: '/api/habits/4/checkins',
-      body: { day: '2026-03-17' },
-    });
-    await waitFor(() => {
-      expect(within(screen.getByTestId('week-4')).getByTestId('progress')).toHaveTextContent('1 day');
-    });
-  });
-
-  it.each([
-    ['its Close button', () => userEvent.click(screen.getByRole('button', { name: 'Close' }))],
-    ['Escape', () => userEvent.keyboard('{Escape}')],
-  ])('opens in a dialog that closes with %s, and gives the focus back to its button', async (_way, close) => {
-    mockApi();
-    await renderApp();
-    const opener = screen.getByRole('button', { name: 'Last 7 days' });
-
-    await userEvent.click(opener);
-    const dialog = await screen.findByRole('dialog', { name: 'Last 7 days' });
-    expect(dialog).toHaveAttribute('aria-modal', 'true');
-    expect(within(dialog).getByRole('button', { name: 'Close' })).toHaveFocus();
-    await close();
-
-    expect(screen.queryByRole('dialog', { name: 'Last 7 days' })).not.toBeInTheDocument();
-    expect(opener).toHaveFocus();
-  });
-
-  it('keeps Tab inside the dialog while it is open', async () => {
-    mockApi();
-    await renderApp();
-
-    await userEvent.click(screen.getByRole('button', { name: 'Last 7 days' }));
-    const dialog = await screen.findByRole('dialog', { name: 'Last 7 days' });
-    await within(dialog).findByTestId('week-1');
-    await userEvent.tab({ shift: true });
-
-    expect(dialog).toContainElement(document.activeElement as HTMLElement);
   });
 });

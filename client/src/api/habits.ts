@@ -5,8 +5,25 @@ export interface Habit {
   name: string;
   /** Days a week the user wants to do it, or null for a habit without a goal. */
   weeklyGoal: number | null;
-  /** The marked days of the last 30 days, each day once. */
+  /** The day the habit started: the day it was created, or its first marked day when that is earlier. */
+  startedOn: string;
+  /** The marked days of the last 60 days, each day once. */
   days: string[];
+}
+
+export interface HistoryHabit {
+  id: number;
+  name: string;
+  weeklyGoal: number | null;
+  startedOn: string;
+  /** The marked days between the first and the last day asked for, each day once, oldest first. */
+  days: string[];
+}
+
+export interface History {
+  from: string;
+  to: string;
+  habits: HistoryHabit[];
 }
 
 export interface HabitInput {
@@ -57,6 +74,16 @@ export function unmarkDay(id: number, day: string): Promise<void> {
   return request<void>(`/api/habits/${id}/checkins/${day}`, { method: 'DELETE' });
 }
 
-export function fetchSummary(): Promise<Summary> {
-  return request<Summary>('/api/summary');
+/** The seven days that end on `end` (today when left out). */
+export function fetchSummary(end?: string): Promise<Summary> {
+  return request<Summary>(end === undefined ? '/api/summary' : `/api/summary?end=${end}`);
+}
+
+/** The marked days of every habit, or of one, from `from` to `to`, both included. */
+export function fetchHistory(from: string, to: string, habitId?: number): Promise<History> {
+  const query = new URLSearchParams({ from, to });
+  if (habitId !== undefined) {
+    query.set('habit', String(habitId));
+  }
+  return request<History>(`/api/history?${query.toString()}`);
 }
