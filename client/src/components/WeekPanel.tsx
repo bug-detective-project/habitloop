@@ -12,6 +12,18 @@ const Panel = styled.div`
   overflow-x: auto;
 `;
 
+/** The name of the one habit shown, above the table: only below 768px, where the table leaves it out. */
+const SingleName = styled.h3`
+  display: none;
+  margin: 0 0 ${({ theme }) => theme.space.sm};
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+
+  @media (max-width: 767px) {
+    display: block;
+  }
+`;
+
 const Table = styled.table<{ $single: boolean }>`
   width: 100%;
   border-collapse: collapse;
@@ -57,7 +69,7 @@ const Table = styled.table<{ $single: boolean }>`
     }
   }
 
-  /* One habit below 768px: its name on a line of its own, the seven days on the line below. */
+  /* One habit below 768px: its name is the title above the table, which keeps only the days. */
   @media (max-width: 767px) {
     ${({ $single }) =>
       $single
@@ -73,12 +85,7 @@ const Table = styled.table<{ $single: boolean }>`
       }
 
       tbody th[scope='row'] {
-        display: block;
-        grid-column: 1 / -1;
-        max-width: none;
-        padding-top: 8px;
-        white-space: normal;
-        -webkit-line-clamp: unset;
+        display: none;
       }
 
       td {
@@ -191,47 +198,50 @@ export function WeekPanel({ end, habitId }: { end: string; habitId?: number }) {
       {summary === null ? (
         <Note>{failed ? 'The summary could not be loaded.' : 'Loading…'}</Note>
       ) : (
-        <Table $single={habitId !== undefined}>
-          <thead>
-            <tr>
-              <th scope="col">Habit</th>
-              {summary.days.map((day) => (
-                <th key={day} scope="col" title={longDay(day)}>
-                  {weekdayName(day)}
-                </th>
-              ))}
-              <th scope="col">Done</th>
-            </tr>
-          </thead>
-          <tbody>
-            {summary.habits
-              .filter((row) => habitId === undefined || row.id === habitId)
-              .map((row) => (
-                <tr key={row.id} data-testid={`week-${row.id}`}>
-                  <th scope="row" title={row.name}>
-                    {row.name}
+        <>
+          {habitId !== undefined && <SingleName>{summary.habits.find((row) => row.id === habitId)?.name}</SingleName>}
+          <Table $single={habitId !== undefined}>
+            <thead>
+              <tr>
+                <th scope="col">Habit</th>
+                {summary.days.map((day) => (
+                  <th key={day} scope="col" title={longDay(day)}>
+                    {weekdayName(day)}
                   </th>
-                  {summary.days.map((day) => {
-                    const done = row.days.includes(day);
-                    return (
-                      <td key={day}>
-                        <Day
-                          type="button"
-                          $done={done}
-                          aria-pressed={done}
-                          aria-label={`${row.name}, ${longDay(day)}`}
-                          onClick={() => void toggle(row, day)}
-                        >
-                          {done ? '✓' : ''}
-                        </Day>
-                      </td>
-                    );
-                  })}
-                  <td data-testid="progress">{row.progress}</td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
+                ))}
+                <th scope="col">Done</th>
+              </tr>
+            </thead>
+            <tbody>
+              {summary.habits
+                .filter((row) => habitId === undefined || row.id === habitId)
+                .map((row) => (
+                  <tr key={row.id} data-testid={`week-${row.id}`}>
+                    <th scope="row" title={row.name}>
+                      {row.name}
+                    </th>
+                    {summary.days.map((day) => {
+                      const done = row.days.includes(day);
+                      return (
+                        <td key={day}>
+                          <Day
+                            type="button"
+                            $done={done}
+                            aria-pressed={done}
+                            aria-label={`${row.name}, ${longDay(day)}`}
+                            onClick={() => void toggle(row, day)}
+                          >
+                            {done ? '✓' : ''}
+                          </Day>
+                        </td>
+                      );
+                    })}
+                    <td data-testid="progress">{row.progress}</td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
+        </>
       )}
       {summary !== null && failed && <Note>The summary could not be refreshed.</Note>}
     </Panel>
