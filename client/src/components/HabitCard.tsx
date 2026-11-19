@@ -11,12 +11,20 @@ const Card = styled.li<{ $done: boolean }>`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.space.md};
-  padding: ${({ theme }) => theme.space.md};
-  border: 1px solid ${({ theme }) => theme.color.border};
+  padding: ${({ theme }) => `${theme.space.md} ${theme.space.lg}`};
+  border: 1px solid ${({ theme, $done }) => ($done ? 'transparent' : theme.color.border)};
   border-radius: ${({ theme }) => theme.radius.md};
   background: ${({ theme, $done }) => ($done ? theme.color.accentSoft : theme.color.card)};
+  box-shadow: ${({ theme, $done }) => ($done ? 'none' : theme.shadow.card)};
   list-style: none;
   cursor: pointer;
+  transition:
+    box-shadow 0.15s,
+    background-color 0.15s;
+
+  &:hover {
+    box-shadow: ${({ theme }) => theme.shadow.lift};
+  }
 `;
 
 const EditingCard = styled(Card)`
@@ -25,14 +33,22 @@ const EditingCard = styled(Card)`
 
 const Check = styled.button<{ $done: boolean }>`
   flex: none;
-  width: 36px;
-  height: 36px;
-  border: 2px solid ${({ theme }) => theme.color.accent};
+  width: 40px;
+  height: 40px;
+  border: 2px solid ${({ theme, $done }) => ($done ? theme.color.accent : theme.color.borderStrong)};
   border-radius: ${({ theme }) => theme.radius.round};
-  background: ${({ theme, $done }) => ($done ? theme.color.accent : 'transparent')};
+  background: ${({ theme, $done }) => ($done ? theme.color.accent : theme.color.card)};
   color: ${({ theme }) => theme.color.accentText};
+  font-size: 1.125rem;
   font-weight: 700;
   cursor: pointer;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.color.accent};
+  }
 `;
 
 const Info = styled.div`
@@ -43,19 +59,33 @@ const Info = styled.div`
 const Name = styled.h3`
   margin: 0;
   overflow: hidden;
-  font-size: 1rem;
+  font-size: 1.0625rem;
+  font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
 
 const Meta = styled.p`
-  margin: 0;
+  margin: 2px 0 0;
   color: ${({ theme }) => theme.color.muted};
   font-size: ${({ theme }) => theme.font.small};
+
+  /* The streak reads as a small tag in front of the count of the week. */
+  [data-testid='streak'] {
+    display: inline-block;
+    padding: 1px 9px;
+    border-radius: ${({ theme }) => theme.radius.round};
+    background: ${({ theme }) => theme.color.warmSoft};
+    color: ${({ theme }) => theme.color.warm};
+    font-weight: 700;
+  }
 `;
 
 const EditButton = styled(Button)`
   flex: none;
+  border-color: transparent;
+  background: transparent;
+  color: ${({ theme }) => theme.color.muted};
 `;
 
 function streakText(streak: number): string {

@@ -16,8 +16,11 @@ const Form = styled.form`
 const Field = styled.label`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.space.xs};
-  font-size: ${({ theme }) => theme.font.small};
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: ${({ theme }) => theme.color.muted};
 `;
 
@@ -27,11 +30,15 @@ const NameField = styled(Field)`
 `;
 
 const Input = styled.input`
-  padding: ${({ theme }) => theme.space.sm};
-  border: 1px solid ${({ theme }) => theme.color.border};
+  padding: 9px 12px;
+  border: 1px solid ${({ theme }) => theme.color.borderStrong};
   border-radius: ${({ theme }) => theme.radius.sm};
   background: ${({ theme }) => theme.color.card};
   color: ${({ theme }) => theme.color.text};
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
 `;
 
 const Select = styled(Input).attrs({ as: 'select' })``;
@@ -45,10 +52,11 @@ const Actions = styled.div`
 const Problem = styled.p`
   flex-basis: 100%;
   margin: 0;
-  padding: ${({ theme }) => theme.space.sm};
+  padding: ${({ theme }) => `${theme.space.sm} ${theme.space.md}`};
   border-radius: ${({ theme }) => theme.radius.sm};
   background: ${({ theme }) => theme.color.dangerSoft};
   color: ${({ theme }) => theme.color.danger};
+  font-weight: 600;
 `;
 
 interface HabitFormProps {

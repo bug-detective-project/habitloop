@@ -13,7 +13,10 @@ const Section = styled.section`
 
 const Heading = styled.h2`
   margin: 0;
-  font-size: ${({ theme }) => theme.font.large};
+  font-family: ${({ theme }) => theme.font.display};
+  font-size: 2rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
 `;
 
 const Lead = styled.p`
@@ -24,16 +27,25 @@ const Lead = styled.p`
 const List = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.space.sm};
+  gap: 10px;
   margin: 0;
   padding: 0;
 `;
 
 const Empty = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.space.xs};
   padding: ${({ theme }) => theme.space.xl};
-  border: 2px dashed ${({ theme }) => theme.color.border};
-  border-radius: ${({ theme }) => theme.radius.md};
+  border: 2px dashed ${({ theme }) => theme.color.borderStrong};
+  border-radius: ${({ theme }) => theme.radius.lg};
+  background: ${({ theme }) => theme.color.card};
   text-align: center;
+
+  strong {
+    font-family: ${({ theme }) => theme.font.display};
+    font-size: 1.375rem;
+  }
 `;
 
 /** The habit with the longest streak, for the line under the heading. */

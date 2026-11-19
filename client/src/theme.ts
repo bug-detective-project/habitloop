@@ -6,21 +6,31 @@ import { createGlobalStyle } from 'styled-components';
  */
 export const theme = {
   color: {
-    page: '#f6f5f1',
+    page: '#f1f4ef',
     card: '#ffffff',
-    text: '#1f2933',
-    muted: '#52606d',
-    border: '#d9d6cd',
+    sunken: '#e6ebe3',
+    text: '#17231d',
+    muted: '#526058',
+    border: '#d5dccf',
+    borderStrong: '#b7c3b1',
     accent: '#0b6e4f',
+    accentStrong: '#085840',
     accentText: '#ffffff',
     accentSoft: '#dff3ea',
+    warm: '#b3541e',
+    warmSoft: '#fbe9dc',
     danger: '#a61b1b',
     dangerSoft: '#fde8e8',
   },
+  shadow: {
+    card: '0 1px 2px rgb(23 35 29 / 0.06), 0 8px 22px -14px rgb(23 35 29 / 0.28)',
+    lift: '0 2px 4px rgb(23 35 29 / 0.08), 0 18px 36px -16px rgb(23 35 29 / 0.36)',
+  },
   space: { xs: '4px', sm: '8px', md: '16px', lg: '24px', xl: '40px' },
-  radius: { sm: '6px', md: '12px', round: '999px' },
+  radius: { sm: '10px', md: '16px', lg: '22px', round: '999px' },
   font: {
     body: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+    display: '"Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif',
     small: '0.875rem',
     large: '1.25rem',
   },
@@ -39,6 +49,7 @@ export const GlobalStyle = createGlobalStyle`
     color: ${({ theme }) => theme.color.text};
     font-family: ${({ theme }) => theme.font.body};
     line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
   }
 
   button, input, select {

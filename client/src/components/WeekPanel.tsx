@@ -9,16 +9,18 @@ import { useHabits } from '../useHabits.ts';
 export const REFRESH_MS = 10_000;
 
 const Panel = styled.aside`
-  padding: ${({ theme }) => theme.space.md};
+  padding: ${({ theme }) => theme.space.lg};
   border: 1px solid ${({ theme }) => theme.color.border};
-  border-radius: ${({ theme }) => theme.radius.md};
+  border-radius: ${({ theme }) => theme.radius.lg};
   background: ${({ theme }) => theme.color.card};
+  box-shadow: ${({ theme }) => theme.shadow.card};
   overflow-x: auto;
 `;
 
 const Title = styled.h2`
-  margin: 0 0 ${({ theme }) => theme.space.sm};
-  font-size: ${({ theme }) => theme.font.large};
+  margin: 0 0 ${({ theme }) => theme.space.md};
+  font-family: ${({ theme }) => theme.font.display};
+  font-size: 1.5rem;
 `;
 
 const Table = styled.table`
@@ -28,27 +30,53 @@ const Table = styled.table`
 
   th,
   td {
-    padding: ${({ theme }) => theme.space.xs};
+    padding: 6px ${({ theme }) => theme.space.xs};
     text-align: center;
+  }
+
+  thead th {
+    color: ${({ theme }) => theme.color.muted};
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  tbody tr {
+    border-top: 1px solid ${({ theme }) => theme.color.border};
   }
 
   th[scope='row'] {
     max-width: 220px;
     overflow: hidden;
+    font-weight: 600;
     text-align: left;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
+  td[data-testid='progress'] {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
 `;
 
 const Day = styled.button<{ $done: boolean }>`
-  width: 28px;
-  height: 28px;
-  border: 2px solid ${({ theme }) => theme.color.accent};
-  border-radius: ${({ theme }) => theme.radius.sm};
+  width: 30px;
+  height: 30px;
+  border: 2px solid ${({ theme, $done }) => ($done ? theme.color.accent : theme.color.borderStrong)};
+  border-radius: ${({ theme }) => theme.radius.round};
   background: ${({ theme, $done }) => ($done ? theme.color.accent : 'transparent')};
   color: ${({ theme }) => theme.color.accentText};
+  font-weight: 700;
   cursor: pointer;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.color.accent};
+  }
 `;
 
 const Note = styled.p`

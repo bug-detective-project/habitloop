@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const SIZE = 44;
+const SIZE = 48;
 const STROKE = 5;
 const RADIUS = (SIZE - STROKE) / 2;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
@@ -32,7 +32,8 @@ const Value = styled.span`
   display: grid;
   place-items: center;
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 `;
 
 interface ProgressRingProps {
