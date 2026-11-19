@@ -16,14 +16,14 @@
 
 ## Description
 
-Members who forget to mark a habit can fill the day later in **Last 7 days**. When they do it, the streak on the card goes to "No streak yet" instead of growing. After a reload the streak is right.
+Members who forget to mark a habit can fill the day later in the week of **History**. When they do it, the streak on the card goes to "No streak yet" instead of growing. After a reload the streak is right.
 
-Example from my account: "Read 10 pages" was done on the 14th, 15th, 16th and today, the 18th. The card says "1 day in a row". I mark the 17th in the panel and expect 5 days. The card says "No streak yet".
+Example from my account: "Read 10 pages" was done on the 14th, 15th, 16th and today, the 18th. The card says "1 day in a row". I mark the 17th in the week of the history, go back to **Today** and expect 5 days. The card says "No streak yet".
 
 ## Steps to reproduce
 
 1. Open HabitLoop and find a habit that is done today and was not done yesterday.
-2. Open **Last 7 days** and mark yesterday for that habit.
+2. Open **History** (its **Week** tab), mark yesterday for that habit, and go back to **Today**.
 3. Look at the streak on the card of the habit.
 
 ## Expected result

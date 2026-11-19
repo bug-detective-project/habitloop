@@ -33,8 +33,8 @@ describe('an answer of the refresh that arrives late', () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     await renderApp();
 
-    await user.click(screen.getByRole('button', { name: 'Last 7 days' }));
-    const panel = await screen.findByRole('complementary', { name: 'Last 7 days' });
+    await user.click(screen.getByRole('button', { name: 'History' }));
+    const panel = await screen.findByTestId('week-table');
     const day = await within(panel).findByRole('button', { name: 'Stretch, Tuesday, March 17' });
 
     // The refresh starts and waits for its answer.

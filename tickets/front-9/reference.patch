@@ -1,0 +1,83 @@
+diff --git a/client/src/History.month.test.tsx b/client/src/History.month.test.tsx
+new file mode 100644
+index 0000000..b2d3c7d
+--- /dev/null
++++ b/client/src/History.month.test.tsx
+@@ -0,0 +1,64 @@
++import { screen } from '@testing-library/react';
++import userEvent from '@testing-library/user-event';
++import { describe, expect, it } from 'vitest';
++import { mockApi } from './test/mockApi.ts';
++import { renderApp } from './test/renderApp.tsx';
++
++async function openMonth() {
++  await userEvent.click(screen.getByRole('button', { name: 'History' }));
++  await userEvent.click(screen.getByRole('tab', { name: 'Month' }));
++}
++
++const cell = (label: RegExp) => screen.findByLabelText(label);
++
++describe('the month of the history', () => {
++  it('counts each day of the month on screen, with the habits that existed then', async () => {
++    mockApi();
++    await renderApp();
++
++    await openMonth();
++
++    expect(screen.getByTestId('period')).toHaveTextContent('March 2026');
++    // Morning walk started on the 16th, so on the 10th three habits existed.
++    expect(await cell(/^Monday, March 16: /)).toHaveAccessibleName('Monday, March 16: 3 of 4 habits done');
++    expect(await cell(/^Tuesday, March 10: /)).toHaveAccessibleName('Tuesday, March 10: 1 of 3 habits done');
++    // Drink water could be done on every day of March up to today, the 18th.
++    expect(await screen.findByTestId('summary-1')).toHaveTextContent('5 of 18');
++  });
++
++  it('counts the days of the month before when going back', async () => {
++    mockApi();
++    await renderApp();
++    await openMonth();
++
++    await userEvent.click(screen.getByRole('button', { name: 'Previous month' }));
++
++    expect(screen.getByTestId('period')).toHaveTextContent('February 2026');
++    expect(await cell(/^Friday, February 27: /)).toHaveAccessibleName('Friday, February 27: 1 of 2 habits done');
++  });
++
++  it('loads January too, the first month of the year', async () => {
++    mockApi();
++    await renderApp();
++    await openMonth();
++
++    await userEvent.click(screen.getByRole('button', { name: 'Previous month' }));
++    await userEvent.click(screen.getByRole('button', { name: 'Previous month' }));
++
++    expect(screen.getByTestId('period')).toHaveTextContent('January 2026');
++    expect(await cell(/^Thursday, January 15: /)).toHaveAccessibleName('Thursday, January 15: no habit yet');
++    expect(screen.queryByText('The history could not be loaded.')).not.toBeInTheDocument();
++  });
++
++  it('shows the days of one habit in the month', async () => {
++    mockApi();
++    await renderApp();
++    await openMonth();
++
++    await userEvent.selectOptions(screen.getByLabelText('Habit'), 'Morning walk');
++
++    expect(await cell(/^Sunday, March 15: /)).toHaveAccessibleName('Sunday, March 15: not started yet');
++    expect(await cell(/^Monday, March 16: /)).toHaveAccessibleName('Monday, March 16: done');
++    expect(await cell(/^Wednesday, March 18: /)).toHaveAccessibleName('Wednesday, March 18: not done');
++  });
++});
+diff --git a/client/src/components/History.tsx b/client/src/components/History.tsx
+index d27a11c..b616d15 100644
+--- a/client/src/components/History.tsx
++++ b/client/src/components/History.tsx
+@@ -35,7 +35,7 @@ function periodOf(view: View, anchor: string, range: Period): Period {
+     case 'month': {
+       // The first day of the month, written out as the API wants it (YYYY-MM-DD).
+       const date = new Date(`${anchor}T00:00:00Z`);
+-      const first = `${date.getUTCFullYear()}-${String(date.getUTCMonth()).padStart(2, '0')}-01`;
++      const first = `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-01`;
+       return { from: first, to: monthEnd(first) };
+     }
+     case 'range':

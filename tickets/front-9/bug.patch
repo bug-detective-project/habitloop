@@ -1,0 +1,13 @@
+diff --git a/client/src/components/History.tsx b/client/src/components/History.tsx
+index b616d15..d27a11c 100644
+--- a/client/src/components/History.tsx
++++ b/client/src/components/History.tsx
+@@ -35,7 +35,7 @@ function periodOf(view: View, anchor: string, range: Period): Period {
+     case 'month': {
+       // The first day of the month, written out as the API wants it (YYYY-MM-DD).
+       const date = new Date(`${anchor}T00:00:00Z`);
+-      const first = `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-01`;
++      const first = `${date.getUTCFullYear()}-${String(date.getUTCMonth()).padStart(2, '0')}-01`;
+       return { from: first, to: monthEnd(first) };
+     }
+     case 'range':

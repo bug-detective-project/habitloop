@@ -26,10 +26,12 @@ describe('habits', () => {
     const { api } = testApi();
     const habits = (await api.get('/api/habits').expect(200)).body as Habit[];
     expect(habits).toHaveLength(8);
-    expect(byName(habits, 'Read 10 pages')).toMatchObject({
-      weeklyGoal: 5,
-      days: ['2026-03-14', '2026-03-15', '2026-03-16', '2026-03-18'],
-    });
+    const read = byName(habits, 'Read 10 pages');
+    expect(read.weeklyGoal).toBe(5);
+    // The sample history goes back months; the list keeps the last 60 days, sorted.
+    expect(read.days.filter((day) => day >= '2026-03-02')).toEqual(['2026-03-14', '2026-03-15', '2026-03-16', '2026-03-18']);
+    expect(read.days[0]! >= '2026-01-17').toBe(true);
+    expect(read.days).toEqual([...read.days].sort());
   });
 
   it('creates a habit and answers the new list', async () => {

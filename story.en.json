@@ -45,7 +45,7 @@
     "assignments": {
       "back-1": {
         "subject": "New ticket: HL-201",
-        "body": "Samuel got a screenshot from a member asking what a \"null day\" is: habits without a weekly goal show \"1 of null days\" in **Last 7 days**.\n\nA server-side one, and `curl` is the fastest way in: look at what `GET /api/summary` answers before you open the browser.\n\nRafaela"
+        "body": "Samuel got a screenshot from a member asking what a \"null day\" is: habits without a weekly goal show \"1 of null days\" in the week of **History**.\n\nA server-side one, and `curl` is the fastest way in: look at what `GET /api/summary` answers before you open the browser.\n\nRafaela"
       },
       "back-2": {
         "subject": "New ticket: HL-202",
@@ -81,19 +81,23 @@
       },
       "front-5": {
         "subject": "New ticket: HL-105",
-        "body": "Nora reports that filling yesterday in **Last 7 days** makes the streak of the habit vanish, and a reload brings it back with the right number.\n\nThe server is right, so this one lives in the browser. Find the function that counts the streak and ask what it expects from its input.\n\nRafaela"
+        "body": "Nora reports that filling yesterday in the week of **History** makes the streak of the habit vanish, and a reload brings it back with the right number.\n\nThe server is right, so this one lives in the browser. Find the function that counts the streak and ask what it expects from its input.\n\nRafaela"
       },
       "front-6": {
         "subject": "New ticket: HL-106",
-        "body": "Samuel was looking at the hosting bill and found the cause himself: the **Last 7 days** panel keeps asking the server every 10 seconds after it is closed, and each time it is opened adds one more.\n\nKeep the Network tab open for this one. The question is who is still running after the panel is gone.\n\nRafaela"
+        "body": "Samuel was looking at the hosting bill and found the cause himself: the week of **History** keeps asking the server every 10 seconds after it leaves the screen, and each time it is opened adds one more.\n\nKeep the Network tab open for this one. The question is who is still running after the week is gone.\n\nRafaela"
       },
       "front-7": {
         "subject": "New ticket: HL-107",
-        "body": "Bianca has one that only shows up now and then: a day she marks in **Last 7 days** empties again a second later, and comes back by itself after a while. Slow connections make it frequent.\n\nTurn on the network throttling in the DevTools so you can see it every time, and look at which answer arrives last.\n\nRafaela"
+        "body": "Bianca has one that only shows up now and then: a day she marks in the week of **History** empties again a second later, and comes back by itself after a while. Slow connections make it frequent.\n\nTurn on the network throttling in the DevTools so you can see it every time, and look at which answer arrives last.\n\nRafaela"
       },
       "front-8": {
         "subject": "New ticket: HL-108",
         "body": "Something to build this time. Nora wants a small ring on each habit card that fills as the weekly goal is reached; the numbers are already on the card, the component is not.\n\nThe ticket says exactly what the ring must expose. Start with the component alone and its values, and leave the drawing for last.\n\nRafaela"
+      },
+      "front-9": {
+        "subject": "New ticket: HL-109",
+        "body": "Samuel says the Month tab of the new history shows almost nothing done in March, while the week is full of green, and January does not load at all.\n\nThe API answers the right days, so look at which days the screen asks for.\n\nRafaela"
       }
     },
     "completion": {

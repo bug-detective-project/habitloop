@@ -1,0 +1,13 @@
+{
+  "type": "fix",
+  "skills": {
+    "en": [
+      "Dates, numbers and text",
+      "Reading errors and debugging"
+    ],
+    "pt": [
+      "Datas, números e texto",
+      "Ler erros e depurar"
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 diff --git a/client/src/components/WeekPanel.stale.test.tsx b/client/src/components/WeekPanel.stale.test.tsx
 new file mode 100644
-index 0000000..f526a74
+index 0000000..be9a896
 --- /dev/null
 +++ b/client/src/components/WeekPanel.stale.test.tsx
 @@ -0,0 +1,60 @@
@@ -39,8 +39,8 @@ index 0000000..f526a74
 +    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
 +    await renderApp();
 +
-+    await user.click(screen.getByRole('button', { name: 'Last 7 days' }));
-+    const panel = await screen.findByRole('complementary', { name: 'Last 7 days' });
++    await user.click(screen.getByRole('button', { name: 'History' }));
++    const panel = await screen.findByTestId('week-table');
 +    const day = await within(panel).findByRole('button', { name: 'Stretch, Tuesday, March 17' });
 +
 +    // The refresh starts and waits for its answer.
@@ -65,7 +65,7 @@ index 0000000..f526a74
 +  });
 +});
 diff --git a/client/src/components/WeekPanel.tsx b/client/src/components/WeekPanel.tsx
-index fd646b8..1020900 100644
+index cd33d88..47e4086 100644
 --- a/client/src/components/WeekPanel.tsx
 +++ b/client/src/components/WeekPanel.tsx
 @@ -1,4 +1,4 @@
@@ -74,7 +74,7 @@ index fd646b8..1020900 100644
  import styled from 'styled-components';
  import { fetchSummary } from '../api/habits.ts';
  import type { Summary, SummaryRow } from '../api/habits.ts';
-@@ -67,13 +67,21 @@ export function WeekPanel() {
+@@ -164,13 +164,21 @@ export function WeekPanel({ end, habitId }: { end: string; habitId?: number }) {
    const { toggleDay } = useHabits();
    const [summary, setSummary] = useState<Summary | null>(null);
    const [failed, setFailed] = useState(false);
@@ -84,9 +84,9 @@ index fd646b8..1020900 100644
    const load = useCallback(async () => {
 +    const request = ++newestRef.current;
      try {
--      setSummary(await fetchSummary());
+-      setSummary(await fetchSummary(end));
 -      setFailed(false);
-+      const data = await fetchSummary();
++      const data = await fetchSummary(end);
 +      if (request === newestRef.current) {
 +        setSummary(data);
 +        setFailed(false);
@@ -97,9 +97,9 @@ index fd646b8..1020900 100644
 +        setFailed(true);
 +      }
      }
-   }, []);
+   }, [end]);
  
-@@ -84,6 +92,8 @@ export function WeekPanel() {
+@@ -181,6 +189,8 @@ export function WeekPanel({ end, habitId }: { end: string; habitId?: number }) {
    }, [load]);
  
    async function toggle(row: SummaryRow, day: string) {

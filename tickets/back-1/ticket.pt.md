@@ -16,13 +16,13 @@
 
 ## Descrição
 
-A meta semanal de um hábito é opcional: muitos alunos só querem marcar o que fizeram. Em **Last 7 days**, a coluna **Done** desses hábitos mostra "1 of null days", "0 of null days" e assim por diante. Os hábitos com meta estão certos ("4 of 5 days").
+A meta semanal de um hábito é opcional: muitos alunos só querem marcar o que fizeram. Na semana do **History**, a coluna **Done** desses hábitos mostra "1 of null days", "0 of null days" e assim por diante. Os hábitos com meta estão certos ("4 of 5 days").
 
 Um aluno mandou uma captura de tela perguntando o que é um "null day".
 
 ## Passos para reproduzir
 
-1. Abra o HabitLoop e clique em **Last 7 days**.
+1. Abra o HabitLoop e clique em **History**: a aba **Week** abre primeiro.
 2. Olhe a coluna **Done** de "Stretch", que não tem meta semanal.
 3. Ou pergunte direto à API: `curl http://localhost:3001/api/summary`.
 
@@ -39,12 +39,12 @@ Mostra "1 of null days".
 - [ ] Em `GET /api/summary`, o `progress` de um hábito sem meta diz só os dias feitos, com "day" para exatamente 1 e "days" nos outros casos.
 - [ ] Nenhuma linha de `progress` contém `null`, `undefined` ou `NaN`.
 - [ ] Os hábitos com meta continuam com "feitos of meta" (por exemplo "4 of 5 days", "1 of 1 day").
-- [ ] O painel **Last 7 days** mostra a linha corrigida.
+- [ ] A semana do **History** mostra a linha corrigida.
 
 ## Ambiente
 
 - HabitLoop 1.0
-- Aparece no painel e na resposta da API
+- Aparece na semana do histórico e na resposta da API
 
 ## Atividade
 

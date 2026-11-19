@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Open the Network tab of the browser on History → Month and look at the request for the history: which days does the screen ask for when the title says March 2026? And when it says January?",
+    "The month is turned into a first and a last day in `client/src/components/History.tsx`. Read how the first day is written: where do the year, the month and the day of that text come from?",
+    "`Date.getUTCMonth()` counts months from 0 (January) to 11 (December), while a date written as text counts them from 01 to 12. Compare how `monthStart` in `client/src/dates.ts` builds the same day."
+  ]
+}

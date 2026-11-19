@@ -1,5 +1,5 @@
 diff --git a/client/src/components/WeekPanel.tsx b/client/src/components/WeekPanel.tsx
-index 1020900..fd646b8 100644
+index 47e4086..cd33d88 100644
 --- a/client/src/components/WeekPanel.tsx
 +++ b/client/src/components/WeekPanel.tsx
 @@ -1,4 +1,4 @@
@@ -8,7 +8,7 @@ index 1020900..fd646b8 100644
  import styled from 'styled-components';
  import { fetchSummary } from '../api/habits.ts';
  import type { Summary, SummaryRow } from '../api/habits.ts';
-@@ -67,21 +67,13 @@ export function WeekPanel() {
+@@ -164,21 +164,13 @@ export function WeekPanel({ end, habitId }: { end: string; habitId?: number }) {
    const { toggleDay } = useHabits();
    const [summary, setSummary] = useState<Summary | null>(null);
    const [failed, setFailed] = useState(false);
@@ -18,12 +18,12 @@ index 1020900..fd646b8 100644
    const load = useCallback(async () => {
 -    const request = ++newestRef.current;
      try {
--      const data = await fetchSummary();
+-      const data = await fetchSummary(end);
 -      if (request === newestRef.current) {
 -        setSummary(data);
 -        setFailed(false);
 -      }
-+      setSummary(await fetchSummary());
++      setSummary(await fetchSummary(end));
 +      setFailed(false);
      } catch {
 -      if (request === newestRef.current) {
@@ -31,9 +31,9 @@ index 1020900..fd646b8 100644
 -      }
 +      setFailed(true);
      }
-   }, []);
+   }, [end]);
  
-@@ -92,8 +84,6 @@ export function WeekPanel() {
+@@ -189,8 +181,6 @@ export function WeekPanel({ end, habitId }: { end: string; habitId?: number }) {
    }, [load]);
  
    async function toggle(row: SummaryRow, day: string) {

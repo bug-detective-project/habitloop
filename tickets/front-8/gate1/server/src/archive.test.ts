@@ -24,12 +24,15 @@ describe('POST /api/habits/:id/archive', () => {
 
   it('keeps the history of the habit in the database', async () => {
     const { api, db } = testApi();
+    const marks = () => (db.prepare('SELECT COUNT(*) AS count FROM checkins WHERE habit_id = 8').get() as { count: number }).count;
+    // The sample history of the habit, whatever its size, is still there after the archive.
+    const before = marks();
     await api.post('/api/habits/8/archive').expect(200);
 
     const habit = db.prepare('SELECT archived_at FROM habits WHERE id = 8').get() as { archived_at: string | null };
-    const marks = db.prepare('SELECT COUNT(*) AS count FROM checkins WHERE habit_id = 8').get() as { count: number };
     expect(habit.archived_at).not.toBeNull();
-    expect(marks.count).toBe(2);
+    expect(before).toBeGreaterThan(0);
+    expect(marks()).toBe(before);
   });
 
   it('answers 404 for a habit that does not exist or is already archived', async () => {

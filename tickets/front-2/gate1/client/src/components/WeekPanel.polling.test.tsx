@@ -8,7 +8,7 @@ function summaryRequests(api: ReturnType<typeof mockApi>): number {
   return requestsOf(api).filter((request) => request.path === '/api/summary').length;
 }
 
-describe('the refresh of the last 7 days', () => {
+describe('the refresh of the week', () => {
   beforeEach(() => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
   });
@@ -17,13 +17,13 @@ describe('the refresh of the last 7 days', () => {
     vi.useRealTimers();
   });
 
-  it('asks the server again every 10 seconds while the panel is open', async () => {
+  it('asks the server again every 10 seconds while the week is on the screen', async () => {
     const api = mockApi();
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     await renderApp();
 
-    await user.click(screen.getByRole('button', { name: 'Last 7 days' }));
-    await screen.findByRole('table');
+    await user.click(screen.getByRole('button', { name: 'History' }));
+    await screen.findByTestId('week-table');
     const opened = summaryRequests(api);
 
     await vi.advanceTimersByTimeAsync(30_000);
@@ -31,15 +31,14 @@ describe('the refresh of the last 7 days', () => {
     expect(summaryRequests(api)).toBeGreaterThanOrEqual(opened + 3);
   });
 
-  it('stops asking once the panel is closed', async () => {
+  it('stops asking once the week leaves the screen', async () => {
     const api = mockApi();
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     await renderApp();
 
-    const toggle = screen.getByRole('button', { name: 'Last 7 days' });
-    await user.click(toggle);
-    await screen.findByRole('table');
-    await user.click(toggle);
+    await user.click(screen.getByRole('button', { name: 'History' }));
+    await screen.findByTestId('week-table');
+    await user.click(screen.getByRole('button', { name: 'Today' }));
     const closed = summaryRequests(api);
 
     await vi.advanceTimersByTimeAsync(60_000);

@@ -15,4 +15,4 @@
    ```
 3. **Adicione um teste de regressão.** A referência adiciona `server/src/summary-no-goal.test.ts`: um hábito sem meta, um novo sem nenhum dia e hábitos com meta.
 
-Depois rode `npm test`, olhe o painel no navegador e mova o card para **Em QA**.
+Depois rode `npm test`, olhe a semana do histórico no navegador e mova o card para **Em QA**.

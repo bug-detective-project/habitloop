@@ -1,9 +1,9 @@
 diff --git a/client/src/components/WeekPanel.streak.test.tsx b/client/src/components/WeekPanel.streak.test.tsx
 new file mode 100644
-index 0000000..3de922f
+index 0000000..4e2fcc7
 --- /dev/null
 +++ b/client/src/components/WeekPanel.streak.test.tsx
-@@ -0,0 +1,23 @@
+@@ -0,0 +1,25 @@
 +import { screen, waitFor, within } from '@testing-library/react';
 +import userEvent from '@testing-library/user-event';
 +import { describe, expect, it } from 'vitest';
@@ -13,14 +13,16 @@ index 0000000..3de922f
 +describe('marking an earlier day', () => {
 +  it('makes the streak longer when the day fills the gap before today', async () => {
 +    mockApi({
-+      habits: [{ id: 2, name: 'Read 10 pages', weeklyGoal: 5, days: ['2026-03-14', '2026-03-15', '2026-03-16', '2026-03-18'] }],
++      habits: [{ id: 2, name: 'Read 10 pages', weeklyGoal: 5, startedOn: '2026-03-01', days: ['2026-03-14', '2026-03-15', '2026-03-16', '2026-03-18'] }],
 +    });
 +    await renderApp();
 +    expect(within(card(2)).getByTestId('streak')).toHaveTextContent('1 day in a row');
 +
-+    await userEvent.click(screen.getByRole('button', { name: 'Last 7 days' }));
-+    const panel = await screen.findByRole('complementary', { name: 'Last 7 days' });
-+    await userEvent.click(await within(panel).findByRole('button', { name: 'Read 10 pages, Tuesday, March 17' }));
++    // The week of the history (its first tab) is where an earlier day is marked; the card is on Today.
++    await userEvent.click(screen.getByRole('button', { name: 'History' }));
++    const week = await screen.findByTestId('week-table');
++    await userEvent.click(await within(week).findByRole('button', { name: 'Read 10 pages, Tuesday, March 17' }));
++    await userEvent.click(screen.getByRole('button', { name: 'Today' }));
 +
 +    await waitFor(() => {
 +      expect(within(card(2)).getByTestId('streak')).toHaveTextContent('5 days in a row');

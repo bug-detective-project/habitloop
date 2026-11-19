@@ -59,7 +59,7 @@ describe('the Today list', () => {
 
   it('puts the day back and says why when the change is refused', async () => {
     mockApi({
-      habits: [{ id: 3, name: 'Morning walk', weeklyGoal: 3, days: ['2026-03-16', '2026-03-17'] }],
+      habits: [{ id: 3, name: 'Morning walk', weeklyGoal: 3, startedOn: '2026-03-16', days: ['2026-03-16', '2026-03-17'] }],
       respond: (request) => (request.method === 'POST' ? json({ error: 'The database is locked' }, 500) : undefined),
     });
     await renderApp();
@@ -141,60 +141,5 @@ describe('creating and changing habits', () => {
 
     expect(screen.queryByRole('form')).not.toBeInTheDocument();
     expect(requestsOf(api).some((request) => request.method === 'PATCH')).toBe(false);
-  });
-});
-
-describe('the last 7 days', () => {
-  it('opens with the days and the progress of each habit', async () => {
-    mockApi();
-    await renderApp();
-
-    await userEvent.click(screen.getByRole('button', { name: 'Last 7 days' }));
-    const panel = await screen.findByRole('complementary', { name: 'Last 7 days' });
-
-    const row = await within(panel).findByTestId('week-2');
-    expect(within(row).getByTestId('progress')).toHaveTextContent('3 of 5 days');
-    expect(within(row).getByRole('button', { name: 'Read 10 pages, Monday, March 16' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    );
-    expect(within(row).getByRole('button', { name: 'Read 10 pages, Tuesday, March 17' })).toHaveAttribute(
-      'aria-pressed',
-      'false',
-    );
-  });
-
-  it('marks an earlier day', async () => {
-    const api = mockApi();
-    await renderApp();
-
-    await userEvent.click(screen.getByRole('button', { name: 'Last 7 days' }));
-    const panel = await screen.findByRole('complementary', { name: 'Last 7 days' });
-    const day = await within(panel).findByRole('button', { name: 'Stretch, Tuesday, March 17' });
-    await userEvent.click(day);
-
-    await waitFor(() => {
-      expect(day).toHaveAttribute('aria-pressed', 'true');
-    });
-    expect(requestsOf(api)).toContainEqual({
-      method: 'POST',
-      path: '/api/habits/4/checkins',
-      body: { day: '2026-03-17' },
-    });
-    await waitFor(() => {
-      expect(within(screen.getByTestId('week-4')).getByTestId('progress')).toHaveTextContent('1 day');
-    });
-  });
-
-  it('closes with a second click on its button', async () => {
-    mockApi();
-    await renderApp();
-
-    const toggle = screen.getByRole('button', { name: 'Last 7 days' });
-    await userEvent.click(toggle);
-    await screen.findByRole('complementary', { name: 'Last 7 days' });
-    await userEvent.click(toggle);
-
-    expect(screen.queryByRole('complementary', { name: 'Last 7 days' })).not.toBeInTheDocument();
   });
 });

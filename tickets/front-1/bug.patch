@@ -1,12 +1,12 @@
 diff --git a/client/src/components/HabitCard.tsx b/client/src/components/HabitCard.tsx
-index ce5adcc..054895b 100644
+index 5c239cd..cec7b83 100644
 --- a/client/src/components/HabitCard.tsx
 +++ b/client/src/components/HabitCard.tsx
-@@ -37,7 +37,6 @@ const Check = styled.button<{ $done: boolean }>`
+@@ -65,7 +65,6 @@ const Check = styled.button<{ $done: boolean }>`
  
  const Info = styled.div`
    flex: 1;
 -  min-width: 0;
- `;
  
- const Name = styled.h3`
+   @media (max-width: 560px) {
+     grid-area: 1 / 2;
