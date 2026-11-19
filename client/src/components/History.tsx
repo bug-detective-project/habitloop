@@ -160,6 +160,11 @@ export function History() {
           </Navigator>
         )}
 
+        {view === 'range' && habitId !== undefined && (
+          <HabitTitle>
+            <HabitTitleLabel>Habit:</HabitTitleLabel> {habits.find((habit) => habit.id === habitId)?.name}
+          </HabitTitle>
+        )}
         {view === 'week' && <WeekPanel end={anchor} habitId={habitId} />}
         {history === null ? (
           view !== 'week' && <Note>{failed ? 'The history could not be loaded.' : 'Loading…'}</Note>
@@ -276,22 +281,22 @@ function PeriodSummary({ history, period, today }: { history: HistoryData; perio
     return (
       <Stats aria-label="How it went">
         <Stat>
-          <StatValue>{fullDay(only.habit.startedOn)}</StatValue>
           <StatLabel>Started</StatLabel>
+          <StatValue>{fullDay(only.habit.startedOn)}</StatValue>
         </Stat>
         <Stat>
+          <StatLabel>Days done</StatLabel>
           <StatValue>
             {only.stats.done} of {only.stats.possible}
           </StatValue>
-          <StatLabel>Days done</StatLabel>
         </Stat>
         <Stat>
-          <StatValue>{only.stats.rate === null ? '–' : `${only.stats.rate}%`}</StatValue>
           <StatLabel>Of the days</StatLabel>
+          <StatValue>{only.stats.rate === null ? '–' : `${only.stats.rate}%`}</StatValue>
         </Stat>
         <Stat>
-          <StatValue>{only.stats.longestStreak}</StatValue>
           <StatLabel>Longest streak</StatLabel>
+          <StatValue>{only.stats.longestStreak}</StatValue>
         </Stat>
       </Stats>
     );
@@ -420,6 +425,11 @@ const DateInput = styled.input`
   border-radius: ${({ theme }) => theme.radius.sm};
   background: ${({ theme }) => theme.color.card};
   font-size: 1rem;
+
+  @media (max-width: 560px) {
+    padding: ${({ theme }) => theme.space.sm};
+    font-size: 0.9375rem;
+  }
 `;
 
 const Panel = styled.div`
@@ -454,10 +464,31 @@ const PeriodName = styled.p`
   text-align: center;
 `;
 
+/** "Habit: <name>" under the range, when one habit is chosen. */
+const HabitTitle = styled.h3`
+  margin: 0;
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+`;
+
+const HabitTitleLabel = styled.span`
+  color: ${({ theme }) => theme.color.muted};
+  font-weight: 600;
+`;
+
 const RangeFields = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 12rem));
   gap: ${({ theme }) => theme.space.md};
+
+  @media (max-width: 560px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  input {
+    width: 100%;
+    min-width: 0;
+  }
 `;
 
 const Note = styled.p`
@@ -566,7 +597,8 @@ const Stats = styled.dl`
 
 const Stat = styled.div`
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.space.xs};
   padding: ${({ theme }) => theme.space.md};
   border-radius: ${({ theme }) => theme.radius.md};
   background: ${({ theme }) => theme.color.sunken};
