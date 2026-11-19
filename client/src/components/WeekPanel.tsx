@@ -12,7 +12,7 @@ const Panel = styled.div`
   overflow-x: auto;
 `;
 
-const Table = styled.table`
+const Table = styled.table<{ $single: boolean }>`
   width: 100%;
   border-collapse: collapse;
   font-size: ${({ theme }) => theme.font.small};
@@ -55,6 +55,42 @@ const Table = styled.table`
     td[data-testid='progress'] {
       display: none;
     }
+  }
+
+  /* One habit below 768px: its name on a line of its own, the seven days on the line below. */
+  @media (max-width: 767px) {
+    ${({ $single }) =>
+      $single
+      && `
+      thead tr,
+      tbody tr {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+      }
+
+      thead th:first-child {
+        display: none;
+      }
+
+      tbody th[scope='row'] {
+        display: block;
+        grid-column: 1 / -1;
+        max-width: none;
+        padding-top: 8px;
+        white-space: normal;
+        -webkit-line-clamp: unset;
+      }
+
+      td {
+        display: flex;
+        justify-content: center;
+      }
+
+      td button {
+        width: 34px;
+        height: 34px;
+      }
+    `}
   }
 
   /* On a phone the name wraps to two lines in a narrow column, so the days fit beside it. */
@@ -155,7 +191,7 @@ export function WeekPanel({ end, habitId }: { end: string; habitId?: number }) {
       {summary === null ? (
         <Note>{failed ? 'The summary could not be loaded.' : 'Loading…'}</Note>
       ) : (
-        <Table>
+        <Table $single={habitId !== undefined}>
           <thead>
             <tr>
               <th scope="col">Habit</th>
