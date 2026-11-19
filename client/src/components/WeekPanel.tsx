@@ -12,6 +12,11 @@ const Panel = styled.div`
   overflow-x: auto;
 `;
 
+const SingleLabel = styled.span`
+  color: ${({ theme }) => theme.color.muted};
+  font-weight: 600;
+`;
+
 /** The name of the one habit shown, above the table: only below 768px, where the table leaves it out. */
 const SingleName = styled.h3`
   display: none;
@@ -199,7 +204,11 @@ export function WeekPanel({ end, habitId }: { end: string; habitId?: number }) {
         <Note>{failed ? 'The summary could not be loaded.' : 'Loading…'}</Note>
       ) : (
         <>
-          {habitId !== undefined && <SingleName>{summary.habits.find((row) => row.id === habitId)?.name}</SingleName>}
+          {habitId !== undefined && (
+            <SingleName>
+              <SingleLabel>Habit:</SingleLabel> {summary.habits.find((row) => row.id === habitId)?.name}
+            </SingleName>
+          )}
           <Table $single={habitId !== undefined}>
             <thead>
               <tr>
