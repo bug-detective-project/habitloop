@@ -257,7 +257,7 @@ function MonthCalendar({ history, month, today, single }: { history: HistoryData
               }
               const { done, active } = dayCount(history.habits, day);
               return (
-                <td key={day} data-testid={`cell-${day}`} aria-label={`${longDay(day)}: ${done} of ${active} habits done`}>
+                <td key={day} data-testid={`cell-${day}`} aria-label={`${longDay(day)}: ${active === 0 ? 'no habit yet' : `${done} of ${active} habits done`}`}>
                   <Cell $share={active === 0 ? null : done / active} aria-hidden="true">
                     <CellDay>{number}</CellDay>
                     <CellCount>{active === 0 ? '' : `${done}/${active}`}</CellCount>
