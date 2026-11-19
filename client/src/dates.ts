@@ -40,6 +40,18 @@ const WEEKDAY = new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: '
 const SHORT = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 const FULL = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 const MONTH = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+const MEDIUM = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const SPOKEN = new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+
+/** "Mar 2, 2026" for a day. */
+export function mediumDay(day: string): string {
+  return MEDIUM.format(new Date(`${day}T00:00:00Z`));
+}
+
+/** "Monday, March 2, 2026" for a day. */
+export function spokenDay(day: string): string {
+  return SPOKEN.format(new Date(`${day}T00:00:00Z`));
+}
 
 /** "Mar 2" for a day. */
 export function shortDay(day: string): string {

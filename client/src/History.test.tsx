@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor, within } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { mockApi, requestsOf } from './test/mockApi.ts';
@@ -107,12 +107,14 @@ describe('the history', () => {
     await userEvent.click(tab('Range'));
 
     // The last 30 days by default: from February 17 to today.
-    expect(screen.getByLabelText('From')).toHaveValue('2026-02-17');
+    expect(screen.getByRole('button', { name: /^From, / })).toHaveAccessibleName('From, February 17, 2026');
     const water = await screen.findByTestId('summary-1');
     expect(water).toHaveTextContent('7 of 30');
     expect(water).toHaveTextContent('23%');
 
-    fireEvent.change(screen.getByLabelText('From'), { target: { value: '2026-03-01' } });
+    await userEvent.click(screen.getByRole('button', { name: /^From, / }));
+    await userEvent.click(screen.getByRole('button', { name: 'Next month' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Sunday, March 1, 2026' }));
 
     await waitFor(() => expect(screen.getByTestId('summary-1')).toHaveTextContent('5 of 18'));
     expect(screen.getByTestId('summary-1')).toHaveTextContent('28%');

@@ -6,6 +6,7 @@ import { addDays, daysFrom, fullDay, longDay, monthEnd, monthName, monthStart, s
 import { periodStats } from '../stats.ts';
 import { useHabits } from '../useHabits.ts';
 import { Button } from './buttons.ts';
+import { DatePicker } from './DatePicker.tsx';
 import { WeekPanel } from './WeekPanel.tsx';
 
 type View = 'day' | 'week' | 'month' | 'range';
@@ -136,14 +137,8 @@ export function History() {
       <Panel id="history-panel" role="tabpanel" aria-labelledby={`tab-${view}`}>
         {view === 'range' ? (
           <RangeFields>
-            <Field>
-              <FieldLabel htmlFor="history-from">From</FieldLabel>
-              <DateInput id="history-from" type="date" value={range.from} max={range.to} onChange={(event) => event.target.value && setRange({ ...range, from: event.target.value })} />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="history-to">To</FieldLabel>
-              <DateInput id="history-to" type="date" value={range.to} min={range.from} max={today} onChange={(event) => event.target.value && setRange({ ...range, to: event.target.value })} />
-            </Field>
+            <DatePicker label="From" value={range.from} max={range.to} onChange={(from) => setRange({ ...range, from })} />
+            <DatePicker label="To" align="end" value={range.to} min={range.from} max={today} onChange={(to) => setRange({ ...range, to })} />
           </RangeFields>
         ) : (
           <Navigator>
@@ -419,19 +414,6 @@ const Select = styled.select`
   font-size: 1rem;
 `;
 
-const DateInput = styled.input`
-  padding: ${({ theme }) => `${theme.space.sm} ${theme.space.md}`};
-  border: 1px solid ${({ theme }) => theme.color.borderStrong};
-  border-radius: ${({ theme }) => theme.radius.sm};
-  background: ${({ theme }) => theme.color.card};
-  font-size: 1rem;
-
-  @media (max-width: 560px) {
-    padding: ${({ theme }) => theme.space.sm};
-    font-size: 0.9375rem;
-  }
-`;
-
 const Panel = styled.div`
   display: flex;
   flex-direction: column;
@@ -483,11 +465,6 @@ const RangeFields = styled.div`
 
   @media (max-width: 560px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  input {
-    width: 100%;
-    min-width: 0;
   }
 `;
 
