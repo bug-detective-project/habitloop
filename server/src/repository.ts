@@ -9,8 +9,25 @@ export interface Habit {
   id: number;
   name: string;
   weeklyGoal: number | null;
+  /** The day the habit started: the day it was created, or its first marked day when that is earlier. */
+  startedOn: string;
   /** The marked days of the last HISTORY_DAYS days, each day once, oldest first. */
   days: string[];
+}
+
+export interface HistoryHabit {
+  id: number;
+  name: string;
+  weeklyGoal: number | null;
+  startedOn: string;
+  /** The marked days between the first and the last day of the history, each day once, oldest first. */
+  days: string[];
+}
+
+export interface History {
+  from: string;
+  to: string;
+  habits: HistoryHabit[];
 }
 
 export interface SummaryRow {
@@ -36,6 +53,28 @@ interface HabitRow {
   weekly_goal: number | null;
 }
 
+interface HabitWithStart extends HabitRow {
+  created_at: string;
+  first_day: string | null;
+}
+
+/** The habits with what tells when they started; all the active ones, or only `habitId`. */
+function habitsWithStart(db: Db, habitId?: number): HabitWithStart[] {
+  const sql = `SELECT h.id, h.name, h.weekly_goal, h.created_at, MIN(c.day) AS first_day
+     FROM habits h
+     LEFT JOIN checkins c ON c.habit_id = h.id
+     WHERE h.archived_at IS NULL ${habitId === undefined ? '' : 'AND h.id = ?'}
+     GROUP BY h.id
+     ORDER BY h.id`;
+  const statement = db.prepare(sql);
+  return (habitId === undefined ? statement.all() : statement.all(habitId)) as HabitWithStart[];
+}
+
+function startedOn(row: HabitWithStart): string {
+  const created = row.created_at.slice(0, 10);
+  return row.first_day !== null && row.first_day < created ? row.first_day : created;
+}
+
 function markedDays(db: Db, habitId: number, from: string, to: string): string[] {
   const rows = db
     .prepare('SELECT DISTINCT day FROM checkins WHERE habit_id = ? AND day BETWEEN ? AND ? ORDER BY day')
@@ -44,15 +83,28 @@ function markedDays(db: Db, habitId: number, from: string, to: string): string[]
 }
 
 export function listHabits(db: Db, today: string): Habit[] {
-  const rows = db
-    .prepare('SELECT id, name, weekly_goal FROM habits WHERE archived_at IS NULL ORDER BY id')
-    .all() as HabitRow[];
-  return rows.map((row) => ({
+  return habitsWithStart(db).map((row) => ({
     id: row.id,
     name: row.name,
     weeklyGoal: row.weekly_goal,
+    startedOn: startedOn(row),
     days: markedDays(db, row.id, addDays(today, -HISTORY_DAYS), today),
   }));
+}
+
+/** The marked days of the active habits (or only `habitId`) from `from` to `to`, both included. */
+export function habitHistory(db: Db, from: string, to: string, habitId?: number): History {
+  return {
+    from,
+    to,
+    habits: habitsWithStart(db, habitId).map((row) => ({
+      id: row.id,
+      name: row.name,
+      weeklyGoal: row.weekly_goal,
+      startedOn: startedOn(row),
+      days: markedDays(db, row.id, from, to),
+    })),
+  };
 }
 
 export function countActiveHabits(db: Db): number {

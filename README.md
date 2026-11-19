@@ -1,7 +1,8 @@
 # HabitLoop
 
-A small habit tracker: the habits of today, each with its streak and its week, a panel with the last
-seven days, and a form to create, change and archive habits. It is a game project of
+A small habit tracker: the habits of today, each with its streak, its week and the day it started; a
+history of every habit by day, week, month or any range of days; and a form to create, change and
+archive habits. It is a game project of
 [Bug Detective](https://github.com/bug-detective-project): this branch (`main`) is the app with
 every bug fixed; the tickets players get are built from it (see the `qa` branch).
 
@@ -56,8 +57,12 @@ Run from the repository root:
 - **The habits live in a React Context** (`client/src/HabitsContext.tsx`, read with `useHabits`):
   every component sees the same date and the same list. A change shows on the screen at once and
   the request follows.
-- **The panel of the last 7 days refreshes itself** every 10 seconds while it is open
-  (`client/src/components/WeekPanel.tsx`).
+- **The history** (`client/src/components/History.tsx`) shows a day, a week, a month (a calendar
+  with how many habits were done each day) or a range of days, for every habit or one. The week is
+  `client/src/components/WeekPanel.tsx`, which refreshes itself every 10 seconds while it is on the
+  screen; the range picks its days with `client/src/components/DatePicker.tsx`.
+- **The sample habits** (`server/src/seed.ts`) have months of history before the last 16 days,
+  which are written by hand because the streaks and the week show them.
 - **Styles are styled-components** that read the theme (`client/src/theme.ts`): no component has a
   color or a size of its own.
 
@@ -82,18 +87,20 @@ The database is created and seeded automatically the first time the server start
 
 ## API
 
-| Method | Route                           | Notes                                                                                       |
-| ------ | ------------------------------- | ------------------------------------------------------------------------------------------- |
-| GET    | `/api/today`                    | `{ today }`: the date the server calls today.                                               |
-| GET    | `/api/habits`                   | The active habits, each with its marked days of the last 60 days.                           |
-| POST   | `/api/habits`                   | Creates a habit (`name`, optional `weeklyGoal` 1 to 7). 400 when invalid, 409 at the limit. |
-| PATCH  | `/api/habits/:id`               | Changes `name` and `weeklyGoal`.                                                            |
-| POST   | `/api/habits/:id/archive`       | Takes the habit out of the lists; its history stays.                                        |
-| POST   | `/api/habits/:id/checkins`      | Marks `{ day }`. 400 for a day in the future.                                               |
-| DELETE | `/api/habits/:id/checkins/:day` | Unmarks the day.                                                                            |
-| GET    | `/api/summary`                  | The last seven days: per habit, the marked days, their count and a progress line.           |
+| Method | Route                           | Notes                                                                                                          |
+| ------ | ------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| GET    | `/api/today`                    | `{ today }`: the date the server calls today.                                                                  |
+| GET    | `/api/habits`                   | The active habits, each with `startedOn` and its marked days of the last 60 days.                              |
+| POST   | `/api/habits`                   | Creates a habit (`name`, optional `weeklyGoal` 1 to 7). 400 when invalid, 409 at the limit.                    |
+| PATCH  | `/api/habits/:id`               | Changes `name` and `weeklyGoal`.                                                                               |
+| POST   | `/api/habits/:id/archive`       | Takes the habit out of the lists; its history stays.                                                           |
+| POST   | `/api/habits/:id/checkins`      | Marks `{ day }`. 400 for a day in the future.                                                                  |
+| DELETE | `/api/habits/:id/checkins/:day` | Unmarks the day.                                                                                               |
+| GET    | `/api/summary`                  | Seven days (`?end=YYYY-MM-DD`, today by default): per habit, the marked days, their count and a progress line. |
+| GET    | `/api/history`                  | `?from=&to=` (366 days at most), optional `&habit=`: per habit, `startedOn` and the marked days.               |
 
-Creating, changing and archiving answer with the list of habits as it is after the change.
+Creating, changing and archiving answer with the list of habits as it is after the change. A habit
+`startedOn` the day it was created, or on its first marked day when that is earlier.
 
 ## CI
 
